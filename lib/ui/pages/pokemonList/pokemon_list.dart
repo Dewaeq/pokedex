@@ -140,11 +140,11 @@ class _PokemonListState extends State<PokemonList> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final state = Provider.of<PokemonState>(context);
-    if (!state.isBusy && !state.gotPokemon) state.init();
+    if (!state.isBusy && !state.gotData) state.init();
 
     return Scaffold(
       body: Center(
-        child: state == null || !state.gotPokemon
+        child: state == null || !state.gotData
             ? CircularProgressIndicator()
             : Container(
                 padding: EdgeInsets.only(left: 25, right: 25, top: 15),

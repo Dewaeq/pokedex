@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
+import 'package:pokedex/ui/pages/pokemonDetails/components/abilitiesWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/bottomNavbar.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/speciesWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/statWidget.dart';
@@ -27,6 +28,7 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         /* border: Border.all(
@@ -84,56 +86,93 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
           children: [
             Container(
               width: double.infinity,
-              height: size.height * 0.15,
               margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              padding: EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 8),
               decoration: BoxDecoration(
-                color: Colors.grey[300].withOpacity(.4),
+                color: Colors.white60.withOpacity(.6),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Expanded(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            Helper.getDisplayName(pokemon.name),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 7),
+                            child: Text(
+                              pokemon.species.generation,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                          Container(
+                            height: 25,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: pokemon.types
+                                  .map(
+                                    (e) => Expanded(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8),
+                                        child: _pokemonTypeWidget(
+                                            e, setSecondaryColor(e)),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  /* Container(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Text(
+                      Pokemon.getId('${pokemon.order}'),
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ), */
+                  SizedBox(width: 20),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        Helper.getDisplayName(pokemon.name),
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[800],
-                        ),
+                      CachedNetworkImage(
+                        imageUrl: pokemon.photoUrl,
+                        width: size.width * 0.25,
                       ),
                       Container(
-                        padding: EdgeInsets.only(top: 7),
+                        padding: EdgeInsets.only(top: 5),
                         child: Text(
                           Pokemon.getId('${pokemon.order}'),
                           style: TextStyle(
                             color: Colors.grey[700],
-                            //   fontWeight: FontWeight.w600,
                             fontSize: 14,
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: pokemon.types
-                            .map(
-                              (e) => Padding(
-                                padding: const EdgeInsets.only(right: 8),
-                                child:
-                                    _pokemonTypeWidget(e, setSecondaryColor(e)),
-                              ),
-                            )
-                            .toList(),
-                      ),
                     ],
                   ),
-                  CachedNetworkImage(imageUrl: pokemon.photoUrl),
                 ],
               ),
             ),
@@ -141,11 +180,13 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
                     detailItem('Species', SpeciesWidget(pokemon: pokemon)),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
+                    detailItem('Abilities', AbilitiesWidget(pokemon: pokemon)),
+                    SizedBox(height: 15),
                     detailItem('Base Stats', StatWidget(pokemon: pokemon)),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
                   ],
                 ),
               ),

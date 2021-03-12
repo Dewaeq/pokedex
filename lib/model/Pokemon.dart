@@ -1,9 +1,10 @@
+import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/model/PokemonSpecies.dart';
 import 'package:pokedex/model/PokemonStat.dart';
 
 class Pokemon {
-  String photoUrl;
   String name;
+  String photoUrl;
   String speciesName;
   PokemonSpecies species;
   List<String> types = [];
@@ -17,6 +18,7 @@ class Pokemon {
   int weight;
 
   List<PokemonStat> stats = [];
+  List<PokemonAbility> abilities = [];
 
   Pokemon({
     this.photoUrl,
@@ -41,6 +43,9 @@ class Pokemon {
     weight = data['weight'];
     stats = List<PokemonStat>.from(
       data['stats'].map((e) => PokemonStat.fromData(e)),
+    );
+    abilities = List<PokemonAbility>.from(
+      data['abilities'].map((e) => PokemonAbility.fromData(e)),
     );
   }
 

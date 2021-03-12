@@ -2,7 +2,13 @@ import 'package:pokedex/model/PokemonEvolution.dart';
 
 class PokemonSpecies {
   String name;
+
   String description;
+
+  String generation;
+
+  String habitat;
+
   int evolutionChainId;
 
   /// Max is 255
@@ -19,14 +25,18 @@ class PokemonSpecies {
   int hatchCounter;
 
   bool legendary;
+
   bool mythical;
 
   List<String> eggGroups = [];
+
   List<PokemonEvolution> evolutions = [];
 
   PokemonSpecies.fromData(Map<String, dynamic> data) {
     name = data['name'];
     description = data['description'];
+    generation = data['generation'];
+    habitat = data['habitat'];
     evolutionChainId = data['evolution_chain_id'];
     baseHappiness = data['base_happiness'];
     captureRate = data['capture_rate'];
