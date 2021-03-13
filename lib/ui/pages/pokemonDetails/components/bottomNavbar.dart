@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class BottomNavbar extends StatefulWidget {
   final Function onPressed;
   final int index;
-  BottomNavbar({@required this.onPressed, @required this.index});
+  BottomNavbar({Key key, @required this.onPressed, @required this.index})
+      : super(key: key);
   @override
   _BottomNavbarState createState() =>
       _BottomNavbarState(index: index, onPressed: onPressed);
@@ -40,18 +41,11 @@ class _BottomNavbarState extends State<BottomNavbar> {
           icon: Icon(Icons.info_outline),
         ),
         BottomNavigationBarItem(
-          label: 'Attack',
-          icon: Image.asset(
-            'assets/icons/sword_icon.png',
-            width: 28,
-          ),
+          label: 'Evolutions',
+          icon: Icon(Icons.next_plan_outlined),
         ),
         BottomNavigationBarItem(
           label: 'More',
-          icon: Icon(Icons.add),
-        ),
-        BottomNavigationBarItem(
-          label: 'Menu',
           icon: Icon(Icons.more_horiz),
         ),
       ],

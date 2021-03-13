@@ -9,10 +9,14 @@ class PokemonSpecies {
 
   String habitat;
 
+  String growthRate;
+
   int evolutionChainId;
 
   /// Max is 255
   int baseHappiness;
+
+  int baseExperience;
 
   /// Max is 255
   int captureRate;
@@ -37,13 +41,15 @@ class PokemonSpecies {
     description = data['description'];
     generation = data['generation'];
     habitat = data['habitat'];
+    growthRate = data['growth_rate'];
     evolutionChainId = data['evolution_chain_id'];
     baseHappiness = data['base_happiness'];
+    baseExperience = data['base_experience'];
     captureRate = data['capture_rate'];
     genderRate = data['gender_rate'];
     hatchCounter = data['hatch_counter'];
     legendary = data['is_legendary'];
     mythical = data['is_mythical'];
-    eggGroups = List<String>.from(data['egg_groups']);
+    eggGroups = Set<String>.from(data['egg_groups']).toList();
   }
 }

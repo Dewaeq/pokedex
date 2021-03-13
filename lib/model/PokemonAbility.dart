@@ -1,5 +1,4 @@
 import 'package:pokedex/model/DefaultAbility.dart';
-import 'package:pokedex/model/Pokemon.dart';
 
 class PokemonAbility {
   String name;

@@ -88,28 +88,27 @@ class AbilitiesWidget extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                         ] +
-                        ability.ability.pokemon
-                            .map(
-                              (p) => Container(
-                                height: 130,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 8),
-                                child: PokemonCard(
-                                  cardType: 1,
-                                  pokemon: state.pokemons
-                                      .firstWhere((e) => e.name == p),
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          PokemonDetailsPage(pokemon: pokemon),
-                                    ),
-                                  ),
-                                  onLongPressed: () {},
+                        ability.ability.pokemon.map((pName) {
+                          var p =
+                              state.pokemons.firstWhere((e) => e.name == pName);
+                          return Container(
+                            height: 130,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 8),
+                            child: PokemonCard(
+                              cardType: 1,
+                              pokemon: p,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      PokemonDetailsPage(pokemon: p),
                                 ),
                               ),
-                            )
-                            .toList(),
+                              onLongPressed: () {},
+                            ),
+                          );
+                        }).toList(),
                   ),
                 ),
               ]),

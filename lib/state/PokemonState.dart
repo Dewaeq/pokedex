@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:pokedex/model/DefaultAbility.dart';
 import 'dart:convert';
 import 'package:pokedex/model/Pokemon.dart';
-import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/model/PokemonEvolution.dart';
 import 'package:pokedex/model/PokemonSpecies.dart';
 import 'package:flutter/services.dart' show rootBundle;
