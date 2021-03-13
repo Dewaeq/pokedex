@@ -31,6 +31,7 @@ dependencies:
   fluttertoast:
   provider:
   cached_network_image:
+  flutter_keyboard_visibility:
 
 dev_dependencies:
   flutter_test:

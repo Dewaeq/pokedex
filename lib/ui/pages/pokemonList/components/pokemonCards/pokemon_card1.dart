@@ -94,7 +94,7 @@ class PokemonCard1 extends StatelessWidget {
               bottom: 10,
               left: 10,
               child: Text(
-                Pokemon.getId(pokemon.id.toString()),
+                Pokemon.getId(pokemon.order.toString()),
                 style: TextStyle(
                   color: Colors.white60,
                   fontSize: 12,

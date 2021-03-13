@@ -17,7 +17,7 @@ class PokemonState with ChangeNotifier {
   void init() async {
     isBusy = true;
     notifyListeners();
-    print('initialising');
+
     var pokemonDataString =
         await rootBundle.loadString('assets/data/all_pokemon.json');
     Map<String, dynamic> pokemonData = jsonDecode(pokemonDataString);
@@ -63,6 +63,22 @@ class PokemonState with ChangeNotifier {
 
         pokemons.add(p);
         gotPokemons.add(p.name);
+      }
+    }
+
+    for (var p in pokemons) {
+      if (p.name.contains('-gmax') ||
+          p.name.contains('-galar') ||
+          p.name.contains('-alola') ||
+          p.name.contains('-mega')) {
+        p.order = pokemons
+            .firstWhere((e) =>
+                e.speciesName == p.speciesName &&
+                !e.name.contains('-gmax') &&
+                !e.name.contains('-galar') &&
+                !e.name.contains('-alola') &&
+                !e.name.contains('-mega'))
+            .order;
       }
     }
 

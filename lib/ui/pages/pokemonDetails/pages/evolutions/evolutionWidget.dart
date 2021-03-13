@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
-import 'package:pokedex/model/PokemonEvolution.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
+import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,7 @@ class EvolutionWidget extends StatelessWidget {
   List<Pokemon> megaEvoPokemon = [];
   List<Pokemon> gMaxPokemon = [];
 
-  Widget _evolution(Size size, Pokemon p) {
+  Widget _evolution(BuildContext context, Size size, Pokemon p) {
     var evolution = pokemon.species.evolutions.firstWhere(
       (e) => p.name.contains(e.fromPokemon),
       orElse: () => null,
@@ -29,7 +29,7 @@ class EvolutionWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _pokemonItem(size, flex, p),
+          _pokemonItem(context, size, flex, p),
           SizedBox(
             width: evolution == null ? 0 : 10,
           ),
@@ -51,23 +51,35 @@ class EvolutionWidget extends StatelessWidget {
     );
   }
 
-  Widget _pokemonItem(Size size, int flex, Pokemon p) {
-    return Column(
-      children: [
-        Text(
-          Helper.getDisplayName(p.name),
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.blueGrey[900],
+  Widget _pokemonItem(BuildContext context, Size size, int flex, Pokemon p) {
+    return FlatButton(
+      onPressed: () {
+        if (p.name != pokemon.name) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
+          );
+        }
+      },
+      onLongPress: () => Helper.showShortPokemonDetails(context, size, p),
+      padding: EdgeInsets.zero,
+      child: Column(
+        children: [
+          Text(
+            Helper.getDisplayName(p.name),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.blueGrey[900],
+            ),
           ),
-        ),
-        SizedBox(height: 15),
-        CachedNetworkImage(
-          imageUrl: p.photoUrl,
-          width: (size.width - 100) / flex,
-        ),
-      ],
+          SizedBox(height: 15),
+          CachedNetworkImage(
+            imageUrl: p.photoUrl,
+            width: (size.width - 100) / flex,
+          ),
+        ],
+      ),
     );
   }
 
@@ -133,7 +145,7 @@ class EvolutionWidget extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: evoPokemon
-                              .map((e) => _evolution(size, e))
+                              .map((e) => _evolution(context, size, e))
                               .toList(),
                         ),
                       ),
@@ -149,7 +161,7 @@ class EvolutionWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: megaEvoPokemon
-                          .map((e) => _pokemonItem(size, 3, e))
+                          .map((e) => _pokemonItem(context, size, 3, e))
                           .toList(),
                     ),
                   ),
@@ -163,12 +175,12 @@ class EvolutionWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: gMaxPokemon
-                          .map((e) => _pokemonItem(size, 3, e))
+                          .map((e) => _pokemonItem(context, size, 3, e))
                           .toList(),
                     ),
                   ),
                 ),
-          SizedBox(height: 40),
+          SizedBox(height: 20),
         ],
       ),
     );

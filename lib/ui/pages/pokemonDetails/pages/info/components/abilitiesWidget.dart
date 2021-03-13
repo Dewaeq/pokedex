@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/state/PokemonState.dart';
+import 'package:pokedex/ui/pages/pokemonDetails/pages/info/components/abilityDetails.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemon_card.dart';
 import 'package:pokedex/utils/color_theme.dart';
@@ -26,127 +27,8 @@ class AbilitiesWidget extends StatelessWidget {
         )),
         backgroundColor: Colors.white,
         isScrollControlled: true,
-        builder: (_) {
-          return Container(
-            height: size.height * 0.75,
-            child: SingleChildScrollView(
-              child: Column(children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    color: setSecondaryColor(pokemon.types[0]),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        Helper.getDisplayName(ability.name),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22,
-                          color: Colors.blueGrey[900],
-                        ),
-                      ),
-                      SizedBox(height: 12),
-                      Text(
-                        Helper.getDisplayName("${pokemon.name}'s ability"),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: Colors.blueGrey[700],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                _detailItem('GAME DESCRIPTION', ability.ability.description),
-                _detailItem('EFFECT', ability.ability.shortEffectDescription),
-                _detailItem(
-                    'IN-DEPTH EFFECT', ability.ability.effectDescription),
-                SizedBox(height: 10),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(18),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                          Text(
-                            'POKEMON WITH THIS ABILITY',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.blueGrey,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                        ] +
-                        ability.ability.pokemon.map((pName) {
-                          var p =
-                              state.pokemons.firstWhere((e) => e.name == pName);
-                          return Container(
-                            height: 130,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 8),
-                            child: PokemonCard(
-                              cardType: 1,
-                              pokemon: p,
-                              onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      PokemonDetailsPage(pokemon: p),
-                                ),
-                              ),
-                              onLongPressed: () {},
-                            ),
-                          );
-                        }).toList(),
-                  ),
-                ),
-              ]),
-            ),
-          );
-        });
-  }
-
-  Widget _detailItem(String title, String text) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(18),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(7),
-      ),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.blueGrey,
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            text.replaceAll('  ', ' '),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.blueGrey[900],
-            ),
-          ),
-        ],
-      ),
-    );
+        isDismissible: true,
+        builder: (_) => AbilityDetails(pokemon: pokemon, ability: ability));
   }
 
   Widget _abilityWidget(
