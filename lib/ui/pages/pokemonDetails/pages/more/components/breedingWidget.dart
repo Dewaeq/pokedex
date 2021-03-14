@@ -146,6 +146,19 @@ class BreedingWidget extends StatelessWidget {
               ),
               description: 'Egg Cycles',
             ),
+            SizedBox(height: pokemon.species.habitat == null ? 0 : 15),
+            pokemon.species.habitat == null
+                ? Container()
+                : ItemWithDescription(
+                    child: Text(
+                      Helper.getDisplayName(pokemon.species.habitat),
+                      style: TextStyle(
+                        color: setPrimaryColor(pokemon.types.first),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    description: 'Habitat',
+                  ),
           ],
         ),
       ),

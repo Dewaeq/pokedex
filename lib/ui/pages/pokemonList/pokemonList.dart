@@ -142,53 +142,6 @@ class _PokemonListState extends State<PokemonList>
       backgroundColor: Colors.white,
       toolbarHeight: size.height * 0.15,
     );
-    return SliverAppBar(
-      title: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-            onChanged: (value) => filterPokemon(value),
-            controller: _controller,
-            textInputAction: TextInputAction.search,
-            decoration: InputDecoration(hintText: 'Pokemon name or id'),
-          ),
-          SizedBox(height: 15),
-          CheckboxListTile(
-            value: false,
-            onChanged: (value) {},
-            title: Text('Include evolutions'),
-          ),
-        ],
-      ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.blueGrey[800]),
-        onPressed: () {
-          filterPokemon('');
-          setState(() {
-            _controller.text = '';
-            _openSearch = false;
-          });
-          FocusScope.of(context).unfocus();
-        },
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(
-            Icons.clear,
-            color: _controller.text.isNotEmpty
-                ? Colors.blueGrey[800]
-                : Colors.blueGrey[200],
-          ),
-          onPressed: () {
-            setState(() => _controller.text = '');
-            filterPokemon('');
-          },
-        ),
-      ],
-      floating: true,
-      backgroundColor: Colors.white,
-      toolbarHeight: size.height * 0.15,
-    );
   }
 
   void filterPokemon(String input) {

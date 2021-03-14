@@ -17,9 +17,6 @@ class HeaderWidget extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        /* border: Border.all(
-          color: Colors.white,
-        ), */
         color: color,
       ),
       child: Text(
@@ -66,7 +63,7 @@ class HeaderWidget extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 5),
                     child: Text(
-                      Pokemon.getId('${pokemon.order}'),
+                      Pokemon.getId('${pokemon.id}'),
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 14,

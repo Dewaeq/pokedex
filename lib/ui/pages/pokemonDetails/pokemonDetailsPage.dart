@@ -27,6 +27,7 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
     return Scaffold(
       bottomNavigationBar: BottomNavbar(
         index: index,
+        backgroundColor: setSecondaryColor(pokemon.types.first),
         key: UniqueKey(),
         onPressed: (value) {
           controller.animateToPage(
@@ -44,7 +45,6 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
             Expanded(
               child: PageView(
                 onPageChanged: (value) => setState(() => index = value),
-                // physics: NeverScrollableScrollPhysics(),
                 controller: controller,
                 children: [
                   InfoWidget(pokemon: pokemon),
