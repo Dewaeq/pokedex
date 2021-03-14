@@ -3,8 +3,6 @@ import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/info/components/abilityDetails.dart';
-import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
-import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemon_card.dart';
 import 'package:pokedex/utils/color_theme.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';

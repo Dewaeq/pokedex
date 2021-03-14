@@ -23,7 +23,53 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: PokemonList(),
+      home: MainPage(),
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RaisedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => PokemonList()),
+                );
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              color: Colors.deepPurpleAccent,
+              child: Text(
+                'All Pokémon',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            RaisedButton(
+              onPressed: () {},
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              color: Colors.deepPurpleAccent,
+              child: Text(
+                'Abilities',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

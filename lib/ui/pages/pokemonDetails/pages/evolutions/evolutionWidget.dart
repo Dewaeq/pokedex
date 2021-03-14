@@ -94,7 +94,7 @@ class EvolutionWidget extends StatelessWidget {
 
     bool alola = pokemon.name.contains('-alola');
     bool galar = pokemon.name.contains('-galar');
-    bool mega = pokemon.name.contains('-mega');
+    // bool mega = pokemon.name.contains('-mega');
 
     if (pokemon.species.evolutions.isNotEmpty) {
       evoPokeNames = pokemon.species.evolutions

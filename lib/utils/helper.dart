@@ -6,6 +6,7 @@ import 'package:pokedex/utils/color_theme.dart';
 
 class Helper {
   static String getDisplayName(String n) {
+    if (n == null) return '';
     n = n.replaceAll('-galar', ' Galarian');
     n = n.replaceAll('-gmax', ' Gigantamax');
     return n.trim().replaceAll('-', ' ').capitalizeFirstofEach();
