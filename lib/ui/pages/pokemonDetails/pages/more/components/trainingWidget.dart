@@ -24,7 +24,9 @@ class TrainingWidget extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text: '${pokemon.species.captureRate}',
+                      text: pokemon.species.captureRate == 0
+                          ? 'Unknown'
+                          : '${pokemon.species.captureRate}',
                       style: TextStyle(
                         color: setPrimaryColor(pokemon.types.first),
                         fontWeight: FontWeight.w600,
@@ -41,7 +43,7 @@ class TrainingWidget extends StatelessWidget {
             SizedBox(height: 15),
             ItemWithDescription(
               child: Text(
-                '${pokemon.species.growthRate}',
+                pokemon.species.growthRate ?? 'Unknown',
                 style: TextStyle(
                   color: setPrimaryColor(pokemon.types.first),
                   fontWeight: FontWeight.w600,
@@ -55,7 +57,9 @@ class TrainingWidget extends StatelessWidget {
                 Expanded(
                   child: ItemWithDescription(
                     child: Text(
-                      '${pokemon.species.baseHappiness} ',
+                      pokemon.species.baseHappiness == 0
+                          ? 'Unknown'
+                          : '${pokemon.species.baseHappiness}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -68,7 +72,7 @@ class TrainingWidget extends StatelessWidget {
                 Expanded(
                   child: ItemWithDescription(
                     child: Text(
-                      '${pokemon.species.baseExperience}',
+                      '${pokemon.species.baseExperience ?? 'Unknown'}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,

@@ -9,7 +9,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class PokemonState with ChangeNotifier {
   bool gotData = false;
   bool isBusy = false;
-  List<Pokemon> pokemons = [];
+  final List<Pokemon> pokemons = [];
   List<DefaultAbility> abilities = [];
   List<String> gotPokemons = [];
   List<String> gotAbilities = [];
@@ -68,9 +68,9 @@ class PokemonState with ChangeNotifier {
 
     for (var p in pokemons) {
       if (p.name.contains('-gmax') ||
-          p.name.contains('-galar') ||
+          p.name.contains('-mega') ||
           p.name.contains('-alola') ||
-          p.name.contains('-mega')) {
+          p.name.contains('-galar')) {
         p.order = pokemons
             .firstWhere((e) =>
                 e.speciesName == p.speciesName &&
@@ -78,15 +78,29 @@ class PokemonState with ChangeNotifier {
                 !e.name.contains('-galar') &&
                 !e.name.contains('-alola') &&
                 !e.name.contains('-mega'))
-            .order;
+            .id;
+        p.id = p.order;
       }
     }
 
     pokemons.sort(((a, b) {
-      if (a.order == -1 && b.order == -1) return 0;
+      if (a.species.name == b.species.name) {
+        if (a.name.contains('-mega') || a.name.contains('-gmax')) {
+          return 1;
+        }
+        return -1;
+      }
+      /* This sorts by family
+       if (a.order == -1 && b.order == -1) return 0;
       if (a.order == -1) return 1;
       if (b.order == -1) return -1;
-      return a.order.compareTo(b.order);
+      return a.order.compareTo(b.order); */
+
+      /// This sorts like we're used to
+      if (a.id == -1 && b.id == -1) return 0;
+      if (a.id == -1) return 1;
+      if (b.id == -1) return -1;
+      return a.id.compareTo(b.id);
     }));
     gotData = true;
     isBusy = false;

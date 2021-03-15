@@ -20,8 +20,9 @@ class _PokemonListState extends State<PokemonList>
   bool _includeEvolutions = false;
   List<Pokemon> shownPokemon;
   PokemonState state;
-  TextEditingController _controller = TextEditingController();
 
+  TextEditingController _searchController = TextEditingController();
+  ScrollController _scrollController;
   AnimationController _animationController;
 
   Widget _fabButton({Function onPressed, String title, IconData icon}) {
@@ -65,17 +66,28 @@ class _PokemonListState extends State<PokemonList>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _fabButton(
-            onPressed: () {}, icon: Icons.sort, title: 'Sort by property'),
+          onPressed: scrollToTop,
+          icon: Icons.keyboard_arrow_up,
+          title: 'Go to top',
+        ),
         _fabButton(
-            onPressed: () {},
-            icon: Icons.filter_list_alt,
-            title: 'Filter by property'),
+          onPressed: () {},
+          icon: Icons.sort,
+          title: 'Sort by property',
+        ),
         _fabButton(
-            onPressed: () {
-              setState(() => _openSearch = !_openSearch);
-            },
-            icon: Icons.search,
-            title: 'Search'),
+          onPressed: () {},
+          icon: Icons.filter_list_alt,
+          title: 'Filter by property',
+        ),
+        _fabButton(
+          onPressed: () {
+            scrollToTop();
+            setState(() => _openSearch = !_openSearch);
+          },
+          icon: Icons.search,
+          title: 'Search',
+        ),
       ],
     );
   }
@@ -97,6 +109,7 @@ class _PokemonListState extends State<PokemonList>
 
   Widget _searchAppBar(Size size) {
     return SliverAppBar(
+      snap: _openSearch,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,7 +118,7 @@ class _PokemonListState extends State<PokemonList>
               Flexible(
                 child: TextField(
                   onChanged: (value) => filterPokemon(value),
-                  controller: _controller,
+                  controller: _searchController,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(hintText: 'Pokemon name or id'),
                 ),
@@ -115,7 +128,7 @@ class _PokemonListState extends State<PokemonList>
           CheckboxListTile(
             onChanged: (value) {
               setState(() => _includeEvolutions = value);
-              filterPokemon(_controller.text);
+              filterPokemon(_searchController.text);
             },
             contentPadding: EdgeInsets.zero,
             value: _includeEvolutions,
@@ -131,7 +144,7 @@ class _PokemonListState extends State<PokemonList>
           onPressed: () {
             filterPokemon('');
             setState(() {
-              _controller.text = '';
+              _searchController.text = '';
               _openSearch = false;
             });
             FocusScope.of(context).unfocus();
@@ -146,16 +159,24 @@ class _PokemonListState extends State<PokemonList>
 
   void filterPokemon(String input) {
     if (input == '') {
-      setState(() => shownPokemon = state.pokemons);
+      setState(() {
+        shownPokemon = state.pokemons;
+      });
       return;
+    }
+    if (input == '') {
+      print('ola');
     }
     input = input.trim().toUpperCase();
     var newPokemon = state.pokemons.where((e) {
       if (_includeEvolutions) {
         for (var x in e.species.evolutions) {
           if (Helper.getDisplayName(x.fromPokemon)
-              .toUpperCase()
-              .contains(input)) {
+                  .toUpperCase()
+                  .contains(input) ||
+              Helper.getDisplayName(x.toPokemon)
+                  .toUpperCase()
+                  .contains(input)) {
             return true;
           }
         }
@@ -167,15 +188,49 @@ class _PokemonListState extends State<PokemonList>
       }
       return false;
     }).toList();
+
+    if (_includeEvolutions) {
+      newPokemon.sort((a, b) {
+        if (a.name.toUpperCase().contains(input)) {
+          if (a.name.contains('-mega') || a.name.contains('-gmax')) {
+            return 1;
+          }
+          return -1;
+        }
+        return 1;
+      });
+    } else {
+      newPokemon.sort((a, b) {
+        if (a.species.name == b.species.name) {
+          if (a.name.contains('-mega') || a.name.contains('-gmax')) {
+            return 1;
+          }
+          return -1;
+        }
+        if (a.order == -1 && b.order == -1) return 0;
+        if (a.order == -1) return 1;
+        if (b.order == -1) return -1;
+        return a.order.compareTo(b.order);
+      });
+    }
+
     setState(() {
       shownPokemon = newPokemon;
     });
   }
 
+  void scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
   void animate() {
-    if (!_open)
+    if (!_open) {
       _animationController.forward();
-    else
+    } else
       _animationController.reverse();
     _open = !_open;
   }
@@ -186,6 +241,9 @@ class _PokemonListState extends State<PokemonList>
       vsync: this,
       duration: Duration(milliseconds: 450),
     )..addListener(() => setState(() {}));
+
+    _scrollController = ScrollController();
+
     super.initState();
   }
 
@@ -222,6 +280,7 @@ class _PokemonListState extends State<PokemonList>
               children: [
                 Container(
                   child: CustomScrollView(
+                    controller: _scrollController,
                     slivers: [
                       !_openSearch ? _appBar(size) : _searchAppBar(size),
                       SliverPadding(

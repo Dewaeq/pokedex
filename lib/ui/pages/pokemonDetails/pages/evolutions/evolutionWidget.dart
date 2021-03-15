@@ -17,6 +17,7 @@ class EvolutionWidget extends StatelessWidget {
   List<Pokemon> evoPokemon = [];
   List<Pokemon> megaEvoPokemon = [];
   List<Pokemon> gMaxPokemon = [];
+  List<Pokemon> alternatePokemon = [];
 
   Widget _evolution(BuildContext context, Size size, Pokemon p) {
     var evolution = pokemon.species.evolutions.firstWhere(
@@ -52,33 +53,50 @@ class EvolutionWidget extends StatelessWidget {
   }
 
   Widget _pokemonItem(BuildContext context, Size size, int flex, Pokemon p) {
-    return FlatButton(
-      onPressed: () {
-        if (p.name != pokemon.name) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
-          );
-        }
-      },
-      onLongPress: () => Helper.showShortPokemonDetails(context, size, p),
-      padding: EdgeInsets.zero,
-      child: Column(
-        children: [
-          Text(
-            Helper.getDisplayName(p.name),
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.blueGrey[900],
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: FlatButton(
+        onPressed: () {
+          if (p.name != pokemon.name) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
+            );
+          }
+        },
+        onLongPress: () => Helper.showShortPokemonDetails(context, size, p),
+        padding: EdgeInsets.zero,
+        child: Column(
+          children: [
+            Text(
+              Helper.getDisplayName(p.name),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.blueGrey[900],
+              ),
             ),
-          ),
-          SizedBox(height: 15),
-          CachedNetworkImage(
-            imageUrl: p.photoUrl,
-            width: (size.width - 100) / flex,
-          ),
-        ],
+            SizedBox(height: 15),
+            CachedNetworkImage(
+              imageUrl: p.photoUrl,
+              width: (size.width - 100) / flex,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _scrollabe(List<Widget> children) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      alignment: Alignment.center,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: children,
+        ),
       ),
     );
   }
@@ -94,7 +112,26 @@ class EvolutionWidget extends StatelessWidget {
 
     bool alola = pokemon.name.contains('-alola');
     bool galar = pokemon.name.contains('-galar');
-    // bool mega = pokemon.name.contains('-mega');
+
+    megaEvoPokemon = state.pokemons
+        .where((e) => e.name.contains(pokemon.species.name + '-mega'))
+        .toList();
+
+    gMaxPokemon = state.pokemons
+        .where((e) =>
+            e.species.name == pokemon.species.name && e.name.contains('-gmax'))
+        .toList();
+    /* gMaxPokemon = state.pokemons
+        .where((e) => e.name.contains(pokemon.species.name + '-gmax'))
+        .toList(); */
+
+    alternatePokemon = state.pokemons
+        .where((e) =>
+            e.species.name == pokemon.species.name &&
+            !e.name.contains('-gmax') &&
+            !e.name.contains('-mega') &&
+            e.name != pokemon.name)
+        .toList();
 
     if (pokemon.species.evolutions.isNotEmpty) {
       evoPokeNames = pokemon.species.evolutions
@@ -112,24 +149,28 @@ class EvolutionWidget extends StatelessWidget {
                     : galar
                         ? '-galar'
                         : ''));
-      megaEvoPokemon = state.pokemons
-          .where((e) => e.name.contains(pokemon.species.name + '-mega'))
-          .toList();
 
-      gMaxPokemon = state.pokemons
-          .where((e) => e.name.contains(pokemon.species.name + '-gmax'))
-          .toList();
-
-      evoPokemon =
-          state.pokemons.where((e) => evoPokeNames.contains(e.name)).toList();
+      evoPokemon = state.pokemons.where((e) {
+        if (e.name.contains('-gmax') || e.name.contains('-mega')) {
+          return false;
+        }
+        if (evoPokeNames.contains(e.name)) {
+          return true;
+        }
+        for (var n in evoPokeNames) {
+          if (e.name.contains(n)) return true;
+        }
+        return false;
+      }).toList();
+      evoPokemon.sort((a, b) => a.id.compareTo(b.id));
     }
+
     return SingleChildScrollView(
       child: Column(
         children: [
           DetailItem(
             title: 'Evolution Chain',
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: evoPokemon.isEmpty
                   ? Container(
                       padding: EdgeInsets.symmetric(vertical: 20),
@@ -138,17 +179,10 @@ class EvolutionWidget extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     )
-                  : Container(
-                      alignment: Alignment.center,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: evoPokemon
-                              .map((e) => _evolution(context, size, e))
-                              .toList(),
-                        ),
-                      ),
+                  : _scrollabe(
+                      evoPokemon
+                          .map((e) => _evolution(context, size, e))
+                          .toList(),
                     ),
             ),
           ),
@@ -156,28 +190,31 @@ class EvolutionWidget extends StatelessWidget {
               ? Container()
               : DetailItem(
                   title: 'Mega Evolution',
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: megaEvoPokemon
-                          .map((e) => _pokemonItem(context, size, 3, e))
-                          .toList(),
-                    ),
+                  child: _scrollabe(
+                    megaEvoPokemon
+                        .map((e) => _pokemonItem(context, size, 3, e))
+                        .toList(),
                   ),
                 ),
           gMaxPokemon.isEmpty
               ? Container()
               : DetailItem(
+                  title: 'Gigantamax forms',
+                  child: _scrollabe(
+                    gMaxPokemon
+                        .map((e) => _pokemonItem(context, size, 3, e))
+                        .toList(),
+                  ),
+                ),
+          SizedBox(height: 20),
+          alternatePokemon.isEmpty
+              ? Container()
+              : DetailItem(
                   title: 'Alternative forms',
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: gMaxPokemon
-                          .map((e) => _pokemonItem(context, size, 3, e))
-                          .toList(),
-                    ),
+                  child: _scrollabe(
+                    alternatePokemon
+                        .map((e) => _pokemonItem(context, size, 3, e))
+                        .toList(),
                   ),
                 ),
           SizedBox(height: 20),

@@ -100,10 +100,16 @@ class AbilityDetails extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                _detailItem('GAME DESCRIPTION', ability.ability.description),
-                _detailItem('EFFECT', ability.ability.shortEffectDescription),
+                _detailItem('GAME DESCRIPTION',
+                    ability.ability.description ?? 'Description not available'),
                 _detailItem(
-                    'IN-DEPTH EFFECT', ability.ability.effectDescription),
+                    'EFFECT',
+                    ability.ability.shortEffectDescription ??
+                        'Description not available'),
+                _detailItem(
+                    'IN-DEPTH EFFECT',
+                    ability.ability.effectDescription ??
+                        'Description not available'),
                 SizedBox(height: 10),
                 Container(
                   margin: EdgeInsets.all(10),

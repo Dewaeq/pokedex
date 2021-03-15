@@ -107,16 +107,36 @@ class BreedingWidget extends StatelessWidget {
                   pokemon.species.genderRate == -1 ? Colors.grey[300] : null,
               padding: pokemon.species.genderRate == -1,
               child: pokemon.species.genderRate == -1
-                  ? Text('Genderless')
+                  ? Text(
+                      'Genderless',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
                   : _genderRatio(),
               description: 'Gender Ratio',
             ),
             SizedBox(height: 15),
             ItemWithDescription(
-              child: Row(
-                children:
-                    pokemon.species.eggGroups.map((e) => _eggGroup(e)).toList(),
-              ),
+              child: pokemon.species.eggGroups.isEmpty
+                  ? Container(
+                      height: 40,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      color: setPrimaryColor(pokemon.types.first),
+                      child: Text(
+                        'Unknown',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : Row(
+                      children: pokemon.species.eggGroups
+                          .map((e) => _eggGroup(e))
+                          .toList(),
+                    ),
               padding: false,
               backgroundColor: Colors.grey[50],
               description: 'Egg Groups',
@@ -146,19 +166,17 @@ class BreedingWidget extends StatelessWidget {
               ),
               description: 'Egg Cycles',
             ),
-            SizedBox(height: pokemon.species.habitat == null ? 0 : 15),
-            pokemon.species.habitat == null
-                ? Container()
-                : ItemWithDescription(
-                    child: Text(
-                      Helper.getDisplayName(pokemon.species.habitat),
-                      style: TextStyle(
-                        color: setPrimaryColor(pokemon.types.first),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    description: 'Habitat',
-                  ),
+            SizedBox(height: 15),
+            ItemWithDescription(
+              child: Text(
+                Helper.getDisplayName(pokemon.species.habitat ?? 'Unknown'),
+                style: TextStyle(
+                  color: setPrimaryColor(pokemon.types.first),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              description: 'Habitat',
+            ),
           ],
         ),
       ),
