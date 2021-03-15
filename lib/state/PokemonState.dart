@@ -11,8 +11,13 @@ class PokemonState with ChangeNotifier {
   bool isBusy = false;
   final List<Pokemon> pokemons = [];
   List<DefaultAbility> abilities = [];
-  List<String> gotPokemons = [];
-  List<String> gotAbilities = [];
+  List<String> _gotPokemons = [];
+  List<String> _gotAbilities = [];
+
+  Map<String, dynamic> _pokemonData;
+  Map<String, dynamic> _evolutionData;
+  Map<String, dynamic> _speciesData;
+  Map<String, dynamic> _abilitiesData;
 
   void init() async {
     isBusy = true;
@@ -20,32 +25,46 @@ class PokemonState with ChangeNotifier {
 
     var pokemonDataString =
         await rootBundle.loadString('assets/data/all_pokemon.json');
-    Map<String, dynamic> pokemonData = jsonDecode(pokemonDataString);
+    _pokemonData = jsonDecode(pokemonDataString);
     var evolutionDataString =
         await rootBundle.loadString('assets/data/all_evolutions.json');
-    Map<String, dynamic> evolutionData = jsonDecode(evolutionDataString);
+    _evolutionData = jsonDecode(evolutionDataString);
     var speciesDataString =
         await rootBundle.loadString('assets/data/all_species.json');
-    Map<String, dynamic> speciesData = jsonDecode(speciesDataString);
+    _speciesData = jsonDecode(speciesDataString);
     var abilitiesDataString =
         await rootBundle.loadString('assets/data/all_abilities.json');
-    Map<String, dynamic> abilitiesData = jsonDecode(abilitiesDataString);
+    _abilitiesData = jsonDecode(abilitiesDataString);
 
-    for (var aData in abilitiesData.values) {
+    _loadAbilities();
+    _loadPokemon();
+
+    _fixPokemonOrder();
+    _sortPokemon();
+
+    gotData = true;
+    isBusy = false;
+    notifyListeners();
+  }
+
+  void _loadAbilities() {
+    for (var aData in _abilitiesData.values) {
       var a = DefaultAbility.fromData(aData);
-      if (!gotAbilities.contains(a.name)) {
+      if (!_gotAbilities.contains(a.name)) {
         abilities.add(a);
-        gotAbilities.add(a.name);
+        _gotAbilities.add(a.name);
       }
     }
+  }
 
-    for (var pData in pokemonData.values) {
+  void _loadPokemon() {
+    for (var pData in _pokemonData.values) {
       var p = Pokemon.fromData(pData);
-      if (!gotPokemons.contains(p.name)) {
-        p.species = PokemonSpecies.fromData(speciesData[p.speciesName]);
+      if (!_gotPokemons.contains(p.name)) {
+        p.species = PokemonSpecies.fromData(_speciesData[p.speciesName]);
 
         var pEvolutions =
-            List.from(evolutionData['${p.species.evolutionChainId}']);
+            List.from(_evolutionData['${p.species.evolutionChainId}']);
         p.species.evolutions =
             pEvolutions.map((e) => PokemonEvolution.fromData(e)).toList();
 
@@ -62,10 +81,12 @@ class PokemonState with ChangeNotifier {
         });
 
         pokemons.add(p);
-        gotPokemons.add(p.name);
+        _gotPokemons.add(p.name);
       }
     }
+  }
 
+  void _fixPokemonOrder() {
     for (var p in pokemons) {
       if (p.name.contains('-gmax') ||
           p.name.contains('-mega') ||
@@ -82,7 +103,9 @@ class PokemonState with ChangeNotifier {
         p.id = p.order;
       }
     }
+  }
 
+  void _sortPokemon() {
     pokemons.sort(((a, b) {
       if (a.species.name == b.species.name) {
         if (a.name.contains('-mega') || a.name.contains('-gmax')) {
@@ -102,8 +125,5 @@ class PokemonState with ChangeNotifier {
       if (b.id == -1) return -1;
       return a.id.compareTo(b.id);
     }));
-    gotData = true;
-    isBusy = false;
-    notifyListeners();
   }
 }
