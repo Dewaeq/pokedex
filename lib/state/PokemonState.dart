@@ -5,11 +5,12 @@ import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonEvolution.dart';
 import 'package:pokedex/model/PokemonSpecies.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:pokedex/utils/helper.dart';
 
 class PokemonState with ChangeNotifier {
   bool gotData = false;
   bool isBusy = false;
-  final List<Pokemon> pokemons = [];
+  List<Pokemon> pokemons = [];
   List<DefaultAbility> abilities = [];
   List<String> _gotPokemons = [];
   List<String> _gotAbilities = [];
@@ -40,7 +41,7 @@ class PokemonState with ChangeNotifier {
     _loadPokemon();
 
     _fixPokemonOrder();
-    _sortPokemon();
+    pokemons = Helper.sortPokemon(pokemons);
 
     gotData = true;
     isBusy = false;
@@ -103,27 +104,5 @@ class PokemonState with ChangeNotifier {
         p.id = p.order;
       }
     }
-  }
-
-  void _sortPokemon() {
-    pokemons.sort(((a, b) {
-      if (a.species.name == b.species.name) {
-        if (a.name.contains('-mega') || a.name.contains('-gmax')) {
-          return 1;
-        }
-        return -1;
-      }
-      /* This sorts by family
-       if (a.order == -1 && b.order == -1) return 0;
-      if (a.order == -1) return 1;
-      if (b.order == -1) return -1;
-      return a.order.compareTo(b.order); */
-
-      /// This sorts like we're used to
-      if (a.id == -1 && b.id == -1) return 0;
-      if (a.id == -1) return 1;
-      if (b.id == -1) return -1;
-      return a.id.compareTo(b.id);
-    }));
   }
 }

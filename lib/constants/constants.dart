@@ -1,5 +1,22 @@
-const String BASE_URL = 'https://pokeapi.co/api/v2';
+const BASE_URL = 'https://pokeapi.co/api/v2';
 
-const int MAX_ATTACK_STAT = 130;
-const int MAX_HP_STAT = 108;
-const int MAX_DEFENSE_STAT = 95;
+const POKEMON_TYPES = <String>[
+  'normal',
+  'fire',
+  'fighting',
+  'water',
+  'flying',
+  'grass',
+  'poison',
+  'electric',
+  'ground',
+  'psychic',
+  'rock',
+  'ice',
+  'bug',
+  'dragon',
+  'ghost',
+  'dark',
+  'steel',
+  'fairy'
+];

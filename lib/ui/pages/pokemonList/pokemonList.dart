@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:pokedex/constants/constants.dart';
+import 'package:pokedex/constants/filterTypes.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
+import 'package:pokedex/ui/pages/pokemonList/components/filterWidget.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemon_card.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +79,7 @@ class _PokemonListState extends State<PokemonList>
           title: 'Sort by property',
         ),
         _fabButton(
-          onPressed: () {},
+          onPressed: _openFilterMenu,
           icon: Icons.filter_list_alt,
           title: 'Filter by property',
         ),
@@ -117,7 +120,7 @@ class _PokemonListState extends State<PokemonList>
             children: [
               Flexible(
                 child: TextField(
-                  onChanged: (value) => filterPokemon(value),
+                  onChanged: (value) => _searchPokemon(value),
                   controller: _searchController,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(hintText: 'Pokemon name or id'),
@@ -128,7 +131,7 @@ class _PokemonListState extends State<PokemonList>
           CheckboxListTile(
             onChanged: (value) {
               setState(() => _includeEvolutions = value);
-              filterPokemon(_searchController.text);
+              _searchPokemon(_searchController.text);
             },
             contentPadding: EdgeInsets.zero,
             value: _includeEvolutions,
@@ -142,7 +145,7 @@ class _PokemonListState extends State<PokemonList>
         child: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.blueGrey[800]),
           onPressed: () {
-            filterPokemon('');
+            _searchPokemon('');
             setState(() {
               _searchController.text = '';
               _openSearch = false;
@@ -157,31 +160,66 @@ class _PokemonListState extends State<PokemonList>
     );
   }
 
-  void filterPokemon(String input) {
-    if (input == '') {
-      setState(() {
-        shownPokemon = state.pokemons;
-      });
+  void _openFilterMenu() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
+      clipBehavior: Clip.hardEdge,
+      isScrollControlled: true,
+      builder: (context) => FilterWidget(
+        filter: _filterPokemon,
+      ),
+    );
+  }
+
+  void _filterPokemon(FilterType filterType, Map<String, dynamic> options) {
+    if (options.containsKey('error')) {
+      print('oh ow');
       return;
     }
-    if (input == '') {
-      print('ola');
+
+    if (filterType == FilterType.FILTER_BY_TYPE) {
+      _filterPokemonByType(options['pokemon_type']);
     }
-    input = input.trim().toUpperCase();
-    var newPokemon = state.pokemons.where((e) {
+  }
+
+  void _filterPokemonByType(String type) {
+    var newPokemon =
+        state.pokemons.where((e) => e.types.contains(type)).toList();
+    setState(() => shownPokemon = newPokemon);
+  }
+
+  void _searchPokemon(String input) {
+    if (input == '') {
+      setState(() => shownPokemon = state.pokemons);
+      return;
+    }
+    input = input.trim().toLowerCase();
+    var newPokemon = state.pokemons;
+
+    if (POKEMON_TYPES.contains(input)) {
+      _filterPokemonByType(input);
+
+      return;
+    }
+    newPokemon = state.pokemons.where((e) {
       if (_includeEvolutions) {
         for (var x in e.species.evolutions) {
           if (Helper.getDisplayName(x.fromPokemon)
-                  .toUpperCase()
+                  .toLowerCase()
                   .contains(input) ||
               Helper.getDisplayName(x.toPokemon)
-                  .toUpperCase()
+                  .toLowerCase()
                   .contains(input)) {
             return true;
           }
         }
       }
-      if (Helper.getDisplayName(e.name).toUpperCase().contains(input) ||
+      if (Helper.getDisplayName(e.name).toLowerCase().contains(input) ||
           '${e.id}'.contains(input) ||
           Pokemon.getId('${e.id}').contains(input)) {
         return true;
@@ -191,7 +229,7 @@ class _PokemonListState extends State<PokemonList>
 
     if (_includeEvolutions) {
       newPokemon.sort((a, b) {
-        if (a.name.toUpperCase().contains(input)) {
+        if (a.name.toLowerCase().contains(input)) {
           if (a.name.contains('-mega') || a.name.contains('-gmax')) {
             return 1;
           }
@@ -200,18 +238,7 @@ class _PokemonListState extends State<PokemonList>
         return 1;
       });
     } else {
-      newPokemon.sort((a, b) {
-        if (a.species.name == b.species.name) {
-          if (a.name.contains('-mega') || a.name.contains('-gmax')) {
-            return 1;
-          }
-          return -1;
-        }
-        if (a.order == -1 && b.order == -1) return 0;
-        if (a.order == -1) return 1;
-        if (b.order == -1) return -1;
-        return a.order.compareTo(b.order);
-      });
+      newPokemon = Helper.sortPokemon(newPokemon);
     }
 
     setState(() {

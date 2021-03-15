@@ -12,6 +12,29 @@ class Helper {
     return n.trim().replaceAll('-', ' ').capitalizeFirstofEach();
   }
 
+  static List<Pokemon> sortPokemon(List<Pokemon> toSort) {
+    return toSort
+      ..sort(((a, b) {
+        if (a.species.name == b.species.name) {
+          if (a.name.contains('-mega') || a.name.contains('-gmax')) {
+            return 1;
+          }
+          return -1;
+        }
+        /* This sorts by family
+       if (a.order == -1 && b.order == -1) return 0;
+      if (a.order == -1) return 1;
+      if (b.order == -1) return -1;
+      return a.order.compareTo(b.order); */
+
+        /// This sorts like we're used to
+        if (a.id == -1 && b.id == -1) return 0;
+        if (a.id == -1) return 1;
+        if (b.id == -1) return -1;
+        return a.id.compareTo(b.id);
+      }));
+  }
+
   static Widget _panelRow(String text1, String text2) {
     return Container(
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 35, right: 15),
