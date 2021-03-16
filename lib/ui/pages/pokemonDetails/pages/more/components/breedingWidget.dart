@@ -125,7 +125,7 @@ class BreedingWidget extends StatelessWidget {
                       alignment: Alignment.center,
                       color: setPrimaryColor(pokemon.types.first),
                       child: Text(
-                        'Unknown',
+                        'No egg groups',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.white,

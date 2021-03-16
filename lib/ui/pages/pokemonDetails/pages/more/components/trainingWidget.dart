@@ -63,6 +63,7 @@ class TrainingWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
+                        color: setPrimaryColor(pokemon.types.first),
                       ),
                     ),
                     description: 'Base Happiness',
@@ -76,6 +77,7 @@ class TrainingWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
+                        color: setPrimaryColor(pokemon.types.first),
                       ),
                     ),
                     description: 'Base Experience',
