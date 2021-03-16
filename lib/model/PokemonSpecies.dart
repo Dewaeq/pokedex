@@ -5,7 +5,11 @@ class PokemonSpecies {
 
   String description;
 
-  String generation;
+  String region;
+
+  int generationId;
+
+  String typeDescription;
 
   String habitat;
 
@@ -39,7 +43,9 @@ class PokemonSpecies {
   PokemonSpecies.fromData(Map<String, dynamic> data) {
     name = data['name'];
     description = data['description'];
-    generation = data['generation'];
+    region = data['region'];
+    generationId = data['generation_id'];
+    typeDescription = data['generation'];
     habitat = data['habitat'];
     growthRate = data['growth_rate'];
     evolutionChainId = data['evolution_chain_id'];
@@ -50,6 +56,6 @@ class PokemonSpecies {
     hatchCounter = data['hatch_counter'];
     legendary = data['is_legendary'];
     mythical = data['is_mythical'];
-    eggGroups = Set<String>.from(data['egg_groups']).toList();
+    eggGroups = List<String>.from(data['egg_groups']);
   }
 }

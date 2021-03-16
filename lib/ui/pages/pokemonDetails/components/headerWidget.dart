@@ -73,7 +73,7 @@ class HeaderWidget extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 7),
                     child: Text(
-                      pokemon.species.generation,
+                      pokemon.species.typeDescription,
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 14,
