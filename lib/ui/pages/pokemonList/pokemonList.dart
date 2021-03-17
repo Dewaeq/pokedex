@@ -228,15 +228,10 @@ class _PokemonListState extends State<PokemonList>
     }).toList();
 
     if (_includeEvolutions) {
-      newPokemon.sort((a, b) {
-        if (a.name.toLowerCase().contains(input)) {
-          if (a.name.contains('-mega') || a.name.contains('-gmax')) {
-            return 1;
-          }
-          return -1;
-        }
-        return 1;
-      });
+      var mainPokemon = newPokemon.firstWhere(
+          (e) => Helper.getDisplayName(e.name).toLowerCase().contains(input));
+      newPokemon.remove(mainPokemon);
+      newPokemon = Helper.sortPokemon(newPokemon)..insert(0, mainPokemon);
     } else {
       newPokemon = Helper.sortPokemon(newPokemon);
     }
