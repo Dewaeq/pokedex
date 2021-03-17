@@ -3,6 +3,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pokedex/constants/constants.dart';
 import 'package:pokedex/constants/filterTypes.dart';
 import 'package:pokedex/model/Pokemon.dart';
+import 'package:pokedex/model/PokemonFilter.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/filterWidget.dart';
@@ -176,20 +177,39 @@ class _PokemonListState extends State<PokemonList>
     );
   }
 
-  void _filterPokemon(FilterType filterType, Map<String, dynamic> options) {
-    if (options.containsKey('error')) {
-      print('oh ow');
+  void _filterPokemon(List<PokemonFilter> filters) {
+    if (filters.isEmpty) {
+      setState(() => shownPokemon = state.pokemons);
       return;
     }
+    shownPokemon = state.pokemons;
 
-    if (filterType == FilterType.FILTER_BY_TYPE) {
-      _filterPokemonByType(options['pokemon_type']);
+    for (var filter in filters) {
+      if (filter.filterType == FilterType.FILTER_BY_TYPE) {
+        _filterPokemonByType(filter.options['type']);
+      } else if (filter.mode == FilterType.FILTER_STAT) {
+        _filterPokemonByStat(filter.options);
+      }
     }
   }
 
-  void _filterPokemonByType(String type) {
+  void _filterPokemonByType(String pokemonType) {
     var newPokemon =
-        state.pokemons.where((e) => e.types.contains(type)).toList();
+        state.pokemons.where((e) => e.types.contains(pokemonType)).toList();
+    setState(() => shownPokemon = newPokemon);
+  }
+
+  void _filterPokemonByStat(Map<String, dynamic> options) {
+    var newPokemon = <Pokemon>[];
+    if (options['mode'] == StatFilterType.HIGHER_THEN) {
+      newPokemon = shownPokemon
+          .where((e) => e.stats[options['index']].baseStat >= options['value'])
+          .toList();
+    } else {
+      newPokemon = shownPokemon
+          .where((e) => e.stats[0].baseStat < options['value'])
+          .toList();
+    }
     setState(() => shownPokemon = newPokemon);
   }
 
