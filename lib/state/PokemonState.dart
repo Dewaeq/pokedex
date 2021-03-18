@@ -20,6 +20,7 @@ class PokemonState with ChangeNotifier {
   Map<String, dynamic> _speciesData;
   Map<String, dynamic> _abilitiesData;
 
+  /// Load all the required data and get notified when done
   void init() async {
     isBusy = true;
     notifyListeners();
@@ -48,6 +49,7 @@ class PokemonState with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Loop through the list of abilitiesData and create defaultAbilityModels from it
   void _loadAbilities() {
     for (var aData in _abilitiesData.values) {
       var a = DefaultAbility.fromData(aData);
@@ -58,6 +60,7 @@ class PokemonState with ChangeNotifier {
     }
   }
 
+  /// Loop through the list of pokemonData and create pokemonModels from it
   void _loadPokemon() {
     for (var pData in _pokemonData.values) {
       var p = Pokemon.fromData(pData);
@@ -87,21 +90,24 @@ class PokemonState with ChangeNotifier {
     }
   }
 
+  /// Give every pokemon theirs appropriate order
   void _fixPokemonOrder() {
     for (var p in pokemons) {
-      if (p.name.contains('-gmax') ||
-          p.name.contains('-mega') ||
-          p.name.contains('-alola') ||
-          p.name.contains('-galar')) {
-        p.order = pokemons
-            .firstWhere((e) =>
-                e.speciesName == p.speciesName &&
-                !e.name.contains('-gmax') &&
-                !e.name.contains('-galar') &&
-                !e.name.contains('-alola') &&
-                !e.name.contains('-mega'))
-            .id;
-        p.id = p.order;
+      if (p.id > 10000) {
+        /// Check if another pokemon with a valid order exists in this species
+        if (pokemons.firstWhere((e) => e.species.name == p.species.name,
+                orElse: () => null) !=
+            null) {
+          p.id = p.order = pokemons
+              .firstWhere((e) =>
+                  e.speciesName == p.speciesName &&
+                  !e.name.contains('-gmax') &&
+                  !e.name.contains('-galar') &&
+                  !e.name.contains('-alola') &&
+                  !e.name.contains('-mega') &&
+                  e.id < 10000)
+              .id;
+        }
       }
     }
   }

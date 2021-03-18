@@ -21,8 +21,10 @@ class _PokemonListState extends State<PokemonList>
   int _cardType = 1;
   bool _open = false;
   bool _openSearch = false;
+  bool _openFilter = false;
   bool _includeEvolutions = false;
   List<Pokemon> shownPokemon;
+  List<PokemonFilter> _filters;
   PokemonState state;
 
   TextEditingController _searchController = TextEditingController();
@@ -60,6 +62,18 @@ class _PokemonListState extends State<PokemonList>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _floatingActionButton() {
+    return FloatingActionButton(
+      onPressed: animate,
+      backgroundColor: _open ? Colors.white : Colors.deepPurpleAccent,
+      child: AnimatedIcon(
+        icon: AnimatedIcons.menu_close,
+        color: _open ? Colors.deepPurpleAccent : Colors.white,
+        progress: _animationController,
       ),
     );
   }
@@ -161,27 +175,76 @@ class _PokemonListState extends State<PokemonList>
     );
   }
 
-  void _openFilterMenu() {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      )),
-      clipBehavior: Clip.hardEdge,
-      isScrollControlled: true,
-      builder: (context) => FilterWidget(
-        filter: _filterPokemon,
-      ),
+  Widget _pokemonList(Size size) {
+    // if (shownPokemon.length % (_cardType + 1) == 0) return Text('hi');
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        !_openSearch ? _appBar(size) : _searchAppBar(size),
+        SliverPadding(
+          padding: EdgeInsets.only(left: 25, right: 25, top: 15),
+          sliver: shownPokemon.isEmpty
+              ? SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      'No pokemon found',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blueGrey[850],
+                      ),
+                    ),
+                  ),
+                )
+              : SliverGrid.count(
+                  crossAxisCount: _cardType + 1,
+                  childAspectRatio: 1.2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  children: List<Widget>.from(shownPokemon.map(
+                    (e) => PokemonCard(
+                      cardType: 1,
+                      pokemon: e,
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PokemonDetailsPage(pokemon: e),
+                        ),
+                      ),
+                      onLongPressed: () =>
+                          Helper.showShortPokemonDetails(context, size, e),
+                    ),
+                  ))
+                    ..addAll([
+                      SizedBox(
+                        height: 1,
+                      ),
+                      shownPokemon.length % (_cardType + 1) == 0
+                          ? SizedBox(height: 1)
+                          : Container(),
+                    ]),
+                ),
+        ),
+      ],
     );
+  }
+
+  void _openFilterMenu() {
+    setState(() => _openFilter = true);
+    return;
+  }
+
+  void _closeFilterMenu() {
+    setState(() => _openFilter = false);
   }
 
   void _filterPokemon(List<PokemonFilter> filters) {
     if (filters.isEmpty) {
+      _filters = null;
       setState(() => shownPokemon = state.pokemons);
       return;
     }
+    _filters = filters;
     shownPokemon = state.pokemons;
 
     for (var filter in filters) {
@@ -189,6 +252,8 @@ class _PokemonListState extends State<PokemonList>
         _filterPokemonByType(filter.options['type']);
       } else if (filter.mode == FilterType.FILTER_STAT) {
         _filterPokemonByStat(filter.options);
+      } else if (filter.filterType == FilterType.FILTER_BY_GENERATION) {
+        _filterPokemonByGeneration(filter.options);
       }
     }
   }
@@ -199,9 +264,18 @@ class _PokemonListState extends State<PokemonList>
     setState(() => shownPokemon = newPokemon);
   }
 
+  void _filterPokemonByGeneration(Map<String, dynamic> options) {
+    var newPokemon = <Pokemon>[];
+    newPokemon = shownPokemon
+        .where((e) => e.species.generationId == options['id'])
+        .toList();
+
+    setState(() => shownPokemon = newPokemon);
+  }
+
   void _filterPokemonByStat(Map<String, dynamic> options) {
     var newPokemon = <Pokemon>[];
-    if (options['mode'] == StatFilterType.HIGHER_THEN) {
+    if (options['mode'] == ValueFilterType.HIGHER_THEN) {
       newPokemon = shownPokemon
           .where((e) => e.stats[options['index']].baseStat >= options['value'])
           .toList();
@@ -306,66 +380,14 @@ class _PokemonListState extends State<PokemonList>
 
     return KeyboardVisibilityBuilder(builder: (_, visible) {
       return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: animate,
-          backgroundColor: _open ? Colors.white : Colors.deepPurpleAccent,
-          child: AnimatedIcon(
-            icon: AnimatedIcons.menu_close,
-            color: _open ? Colors.deepPurpleAccent : Colors.white,
-            progress: _animationController,
-          ),
-        ),
+        floatingActionButton: _openFilter ? null : _floatingActionButton(),
         backgroundColor: Colors.grey[50],
         body: SafeArea(
           child: Center(
             child: Stack(
               children: [
                 Container(
-                  child: CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [
-                      !_openSearch ? _appBar(size) : _searchAppBar(size),
-                      SliverPadding(
-                        padding: EdgeInsets.only(left: 25, right: 25, top: 15),
-                        sliver: shownPokemon.isEmpty
-                            ? SliverFillRemaining(
-                                child: Center(
-                                  child: Text(
-                                    'No pokemon found',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.blueGrey[850],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : SliverGrid.count(
-                                crossAxisCount: _cardType + 1,
-                                childAspectRatio: 1.2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                children: List<Widget>.from(shownPokemon.map(
-                                  (e) => PokemonCard(
-                                    cardType: 1,
-                                    pokemon: e,
-                                    onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            PokemonDetailsPage(pokemon: e),
-                                      ),
-                                    ),
-                                    onLongPressed: () =>
-                                        Helper.showShortPokemonDetails(
-                                            context, size, e),
-                                  ),
-                                ))
-                                  ..add(SizedBox(height: 20)),
-                              ),
-                      ),
-                    ],
-                  ),
+                  child: _pokemonList(size),
                 ),
                 !_open
                     ? Container()
@@ -377,7 +399,14 @@ class _PokemonListState extends State<PokemonList>
                           opacity: _open ? 1 : 0,
                           child: floatingOptions(),
                         ),
+                      ),
+                _openFilter
+                    ? FilterWidget(
+                        filter: _filterPokemon,
+                        onClosed: _closeFilterMenu,
+                        filters: _filters,
                       )
+                    : Container(),
               ],
             ),
           ),

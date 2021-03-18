@@ -3,6 +3,7 @@ import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/itemWithDescription.dart';
 import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/helper.dart';
 
 class TrainingWidget extends StatelessWidget {
   final Pokemon pokemon;
@@ -43,7 +44,9 @@ class TrainingWidget extends StatelessWidget {
             SizedBox(height: 15),
             ItemWithDescription(
               child: Text(
-                pokemon.species.growthRate ?? 'Unknown',
+                pokemon.species.growthRate == null
+                    ? 'Unknown'
+                    : Helper.getDisplayName(pokemon.species.growthRate),
                 style: TextStyle(
                   color: setPrimaryColor(pokemon.types.first),
                   fontWeight: FontWeight.w600,

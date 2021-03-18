@@ -45,7 +45,7 @@ class PokemonSpecies {
     description = data['description'];
     region = data['region'];
     generationId = data['generation_id'];
-    typeDescription = data['generation'];
+    typeDescription = data['type_description'];
     habitat = data['habitat'];
     growthRate = data['growth_rate'];
     evolutionChainId = data['evolution_chain_id'];

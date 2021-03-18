@@ -2,6 +2,7 @@
   static const FILTER_BY_TYPE = 'hi';
 } */
 enum FilterType {
+  FILTER_BY_GENERATION,
   FILTER_BY_TYPE,
   FILTER_BY_HP,
   FILTER_BY_ATK,
@@ -14,7 +15,7 @@ enum FilterType {
   FILTER_STAT,
 }
 
-enum StatFilterType {
+enum ValueFilterType {
   /// Higher also includes equal to
   HIGHER_THEN,
   LOWER_THEN,

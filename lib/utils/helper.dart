@@ -12,11 +12,21 @@ class Helper {
     return n.trim().replaceAll('-', ' ').capitalizeFirstofEach();
   }
 
+  static String getGenerationName(String n) {
+    if (n == null) return '';
+    var split = n.split('-');
+    var result =
+        split[0].capitalizeFirstofEach() + ' ' + split[1].toUpperCase();
+    return result;
+  }
+
   static List<Pokemon> sortPokemon(List<Pokemon> toSort) {
     return toSort
       ..sort(((a, b) {
         if (a.species.name == b.species.name) {
-          if (a.name.contains('-mega') || a.name.contains('-gmax')) {
+          if (a.name.contains('-mega') ||
+              a.name.contains('-gmax') ||
+              a.name.contains('-eternamax')) {
             return 1;
           }
           return -1;
