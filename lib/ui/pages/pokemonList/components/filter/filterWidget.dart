@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pokedex/constants/constants.dart';
 import 'package:pokedex/constants/filterTypes.dart';
-import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonFilter.dart';
+import 'package:pokedex/ui/pages/pokemonList/components/filter/filterButtons.dart';
 import 'package:pokedex/utils/helper.dart';
 
 class FilterWidget extends StatefulWidget {
@@ -54,6 +54,16 @@ class _FilterWidgetState extends State<FilterWidget> {
         mode: FilterType.FILTER_PROPERTY,
         options: <String, dynamic>{
           'type': _typeFilterName,
+        },
+      ));
+    }
+    if (enabledFilters.contains('generation')) {
+      filters.add(PokemonFilter(
+        filterType: FilterType.FILTER_BY_GENERATION,
+        mode: FilterType.FILTER_PROPERTY,
+        options: <String, dynamic>{
+          'id': GENERATIONS
+              .firstWhere((e) => e['name'] == _generationFilterName)['id'],
         },
       ));
     }
@@ -122,16 +132,6 @@ class _FilterWidgetState extends State<FilterWidget> {
           'index': 5,
           'mode': _speedFilterMode,
           'value': int.parse(_speedLimitController.text),
-        },
-      ));
-    }
-    if (enabledFilters.contains('generation')) {
-      filters.add(PokemonFilter(
-        filterType: FilterType.FILTER_BY_GENERATION,
-        mode: FilterType.FILTER_PROPERTY,
-        options: <String, dynamic>{
-          'id': GENERATIONS
-              .firstWhere((e) => e['name'] == _generationFilterName)['id'],
         },
       ));
     }
@@ -418,70 +418,6 @@ class _FilterWidgetState extends State<FilterWidget> {
     );
   }
 
-  Widget _filterButton() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: FlatButton(
-        onPressed: filter,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        minWidth: double.infinity,
-        color: Colors.deepPurpleAccent,
-        child: SizedBox(
-          width: double.infinity,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Text(
-                'APPLY',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              Positioned(
-                left: 0,
-                child: Icon(Icons.filter_list_alt, color: Colors.white),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _resetFilterButton() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: OutlineButton(
-        onPressed: resetFilters,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        highlightedBorderColor: Colors.grey,
-        child: SizedBox(
-          width: double.infinity,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Text(
-                'RESET FILTERS',
-                style: TextStyle(
-                  color: Colors.deepPurpleAccent,
-                  fontSize: 16,
-                ),
-              ),
-              Positioned(
-                left: 0,
-                child: Icon(
-                  Icons.cancel_outlined,
-                  color: Colors.deepPurpleAccent,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   void initState() {
     if (widget.filters != null) filters = widget.filters;
@@ -489,6 +425,11 @@ class _FilterWidgetState extends State<FilterWidget> {
       if (filter.filterType == FilterType.FILTER_BY_TYPE) {
         enabledFilters.add('type');
         _typeFilterName = filter.options['type'];
+      }
+      if (filter.filterType == FilterType.FILTER_BY_GENERATION) {
+        enabledFilters.add('generation');
+        _generationFilterName = GENERATIONS
+            .firstWhere((e) => e['id'] == filter.options['id'])['name'];
       }
       if (filter.filterType == FilterType.FILTER_BY_HP) {
         enabledFilters.add('hp');
@@ -555,17 +496,17 @@ class _FilterWidgetState extends State<FilterWidget> {
                   ),
                 ),
                 _typeFilterWidget(),
+                _generationFilter(),
                 _hpFilter(),
                 _atkFilter(),
                 _defFilter(),
                 _specAtkFilter(),
                 _specDefFilter(),
                 _speedFilter(),
-                _generationFilter(),
                 SizedBox(height: 25),
-                _resetFilterButton(),
+                ResetFiltersButton(resetFilters: resetFilters),
                 SizedBox(height: 5),
-                _filterButton(),
+                ApplyFiltersButton(filter: filter),
                 SizedBox(height: 15),
               ],
             ),
