@@ -467,6 +467,7 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return MaterialButton(
       onPressed: widget.onClosed,
       padding: EdgeInsets.zero,
@@ -474,6 +475,7 @@ class _FilterWidgetState extends State<FilterWidget> {
       child: Container(
         alignment: Alignment.bottomCenter,
         child: Container(
+          height: size.height * 0.8,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -481,35 +483,41 @@ class _FilterWidgetState extends State<FilterWidget> {
               topRight: Radius.circular(20),
             ),
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 25, bottom: 15),
-                  child: Text(
-                    'Filter by...',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.blueGrey[800],
-                      fontSize: 18,
-                    ),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 25, bottom: 15),
+                child: Text(
+                  'Filter by...',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.blueGrey[800],
+                    fontSize: 18,
                   ),
                 ),
-                _typeFilterWidget(),
-                _generationFilter(),
-                _hpFilter(),
-                _atkFilter(),
-                _defFilter(),
-                _specAtkFilter(),
-                _specDefFilter(),
-                _speedFilter(),
-                SizedBox(height: 25),
-                ResetFiltersButton(resetFilters: resetFilters),
-                SizedBox(height: 5),
-                ApplyFiltersButton(filter: filter),
-                SizedBox(height: 15),
-              ],
-            ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _typeFilterWidget(),
+                      _generationFilter(),
+                      _hpFilter(),
+                      _atkFilter(),
+                      _defFilter(),
+                      _specAtkFilter(),
+                      _specDefFilter(),
+                      _speedFilter(),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 25),
+              ResetFiltersButton(resetFilters: resetFilters),
+              SizedBox(height: 5),
+              ApplyFiltersButton(filter: filter),
+              SizedBox(height: 15),
+            ],
           ),
         ),
       ),
