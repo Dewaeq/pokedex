@@ -165,31 +165,65 @@ class _FilterWidgetState extends State<FilterWidget> {
   }
 
   Widget _typeFilterWidget() {
+    return _dropDownFilter(
+      title: 'Type',
+      filterType: FilterType.FILTER_BY_TYPE,
+      filterName: 'type',
+      children: POKEMON_TYPES
+          .map((e) => DropdownMenuItem(
+                value: e,
+                child: Text(Helper.getDisplayName(e)),
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _generationFilter() {
+    return _dropDownFilter(
+      title: 'Generation',
+      filterType: FilterType.FILTER_BY_GENERATION,
+      filterName: 'generation',
+      children: GENERATIONS
+          .map((e) => DropdownMenuItem(
+                value: e['name'],
+                child: Text(Helper.getGenerationName(e['name'])),
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _dropDownFilter({
+    @required String title,
+    @required FilterType filterType,
+    @required String filterName,
+    @required List<DropdownMenuItem<dynamic>> children,
+  }) {
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
-      value: enabledFilters.contains('type'),
+      value: enabledFilters.contains(filterName),
       onChanged: (value) {
-        if (enabledFilters.contains('type')) {
-          filters.removeWhere((e) => e.filterType == FilterType.FILTER_BY_HP);
-          setState(() => enabledFilters.remove('type'));
+        if (enabledFilters.contains(filterName)) {
+          filters.removeWhere((e) => e.filterType == filterType);
+          setState(() => enabledFilters.remove(filterName));
         } else {
-          setState(() => enabledFilters.add('type'));
+          setState(() => enabledFilters.add(filterName));
         }
       },
       title: Row(
         children: [
-          Text('Type'),
+          Text(title),
           Spacer(),
           DropdownButton(
-            value: _typeFilterName,
-            items: POKEMON_TYPES
-                .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(Helper.getDisplayName(e)),
-                    ))
-                .toList(),
-            onChanged: (newType) {
-              setState(() => _typeFilterName = newType);
+            value:
+                filterName == 'type' ? _typeFilterName : _generationFilterName,
+            items: children,
+            onChanged: (value) {
+              setState(() {
+                filterName == 'type'
+                    ? _typeFilterName = value
+                    : _generationFilterName = value;
+                enabledFilters.add(filterName);
+              });
             },
           ),
         ],
@@ -363,12 +397,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 controller: controller,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 maxLength: 3,
-                decoration: InputDecoration(
-                  counter: Container(),
-                  errorStyle: TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
+                decoration: InputDecoration(counter: Container()),
               ),
             ),
           ),
@@ -377,49 +406,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     );
   }
 
-  Widget _generationFilter() {
-    return CheckboxListTile(
-      controlAffinity: ListTileControlAffinity.leading,
-      value: enabledFilters.contains('generation'),
-      onChanged: (value) {
-        if (enabledFilters.contains('generation')) {
-          filters.removeWhere(
-              (e) => e.filterType == FilterType.FILTER_BY_GENERATION);
-          setState(() => enabledFilters.remove('generation'));
-        } else {
-          setState(() => enabledFilters.add('generation'));
-        }
-      },
-      title: Row(
-        children: [
-          Text('Generation'),
-          Spacer(),
-          DropdownButton(
-            value: _generationFilterName,
-            items: GENERATIONS
-                .map((e) => DropdownMenuItem(
-                      value: e['name'],
-                      child: Text(
-                        Helper.getGenerationName(e['name']),
-                      ),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() => _generationFilterName = value);
-              if (!enabledFilters.contains('generation')) {
-                setState(() {
-                  enabledFilters.add('generation');
-                });
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void initState() {
+  void init() {
     if (widget.filters != null) filters = widget.filters;
     for (var filter in filters) {
       if (filter.filterType == FilterType.FILTER_BY_TYPE) {
@@ -462,6 +449,11 @@ class _FilterWidgetState extends State<FilterWidget> {
         _speedLimitController.text = filter.options['value'].toString();
       }
     }
+  }
+
+  @override
+  void initState() {
+    init();
     super.initState();
   }
 
