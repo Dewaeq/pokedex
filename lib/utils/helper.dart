@@ -134,7 +134,7 @@ class Helper {
                   padding: EdgeInsets.only(top: 110),
                   child: Column(
                     children: [
-                      _panelRow("Id", Pokemon.getId(pokemon.order.toString())),
+                      _panelRow("Id", Pokemon.getId(pokemon.id.toString())),
                       if (pokemon.types.length == 1)
                         _panelRow(
                             'Type', pokemon.types[0].capitalizeFirstofEach()),

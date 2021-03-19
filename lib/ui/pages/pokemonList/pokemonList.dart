@@ -6,6 +6,7 @@ import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonFilter.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
+import 'package:pokedex/ui/pages/pokemonList/components/filter/filterButtons.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/filter/filterWidget.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemon_card.dart';
 import 'package:pokedex/utils/helper.dart';
@@ -24,6 +25,7 @@ class _PokemonListState extends State<PokemonList>
   bool _openFilter = false;
   bool _includeEvolutions = false;
   List<Pokemon> shownPokemon;
+  List<Pokemon> filteredPokemon;
   List<PokemonFilter> _filters;
   PokemonState state;
 
@@ -169,7 +171,7 @@ class _PokemonListState extends State<PokemonList>
         child: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.blueGrey[800]),
           onPressed: () {
-            _searchPokemon('');
+            _filterPokemon(_filters); // _searchPokemon('');
             setState(() {
               _searchController.text = '';
               _openSearch = false;
@@ -193,15 +195,19 @@ class _PokemonListState extends State<PokemonList>
           padding: EdgeInsets.only(left: 25, right: 25, top: 15),
           sliver: shownPokemon.isEmpty
               ? SliverFillRemaining(
-                  child: Center(
-                    child: Text(
-                      'No pokemon found',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blueGrey[850],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No pokemon found',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blueGrey[850],
+                        ),
                       ),
-                    ),
+                      _filters != null ? _clearFilters() : Container(),
+                    ],
                   ),
                 )
               : SliverGrid.count(
@@ -237,6 +243,19 @@ class _PokemonListState extends State<PokemonList>
     );
   }
 
+  Widget _clearFilters() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: ResetFiltersButton(
+        resetFilters: () {
+          _searchController.text = '';
+          setState(() => _filters = null);
+          _filterPokemon(_filters);
+        },
+      ),
+    );
+  }
+
   void _openFilterMenu() {
     setState(() => _openFilter = true);
   }
@@ -246,13 +265,14 @@ class _PokemonListState extends State<PokemonList>
   }
 
   void _filterPokemon(List<PokemonFilter> filters) {
-    if (filters.isEmpty) {
+    if (filters == null || filters.isEmpty) {
       _filters = null;
       setState(() => shownPokemon = state.pokemons);
       return;
     }
     _filters = filters;
     shownPokemon = state.pokemons;
+    _searchController.text = '';
 
     for (var filter in filters) {
       if (filter.filterType == FilterType.FILTER_BY_TYPE) {
@@ -263,6 +283,7 @@ class _PokemonListState extends State<PokemonList>
         _filterPokemonByGeneration(filter.options);
       }
     }
+    filteredPokemon = shownPokemon;
   }
 
   void _filterPokemonByType(String pokemonType) {
@@ -300,14 +321,14 @@ class _PokemonListState extends State<PokemonList>
       return;
     }
     input = input.trim().toLowerCase();
-    var newPokemon = state.pokemons;
+    var newPokemon = _filters == null ? state.pokemons : filteredPokemon;
 
-    if (POKEMON_TYPES.contains(input)) {
+    if (POKEMON_TYPES.contains(input) && _filters == null) {
       _filterPokemonByType(input);
       return;
     }
 
-    newPokemon = state.pokemons.where((e) {
+    newPokemon = newPokemon.where((e) {
       if (_includeEvolutions) {
         for (var x in e.species.evolutions) {
           if (Helper.getDisplayName(x.fromPokemon)
@@ -336,8 +357,6 @@ class _PokemonListState extends State<PokemonList>
     } else {
       newPokemon = Helper.sortPokemon(newPokemon);
     }
-
-    if (_filters != null) _filterPokemon(_filters);
 
     setState(() {
       shownPokemon = newPokemon;
@@ -402,7 +421,7 @@ class _PokemonListState extends State<PokemonList>
                     ? Container()
                     : Positioned(
                         bottom: 85,
-                        right: 5,
+                        right: 15,
                         child: AnimatedOpacity(
                           duration: Duration(milliseconds: 200),
                           opacity: _open ? 1 : 0,
