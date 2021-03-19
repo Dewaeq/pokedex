@@ -185,7 +185,6 @@ class _PokemonListState extends State<PokemonList>
   }
 
   Widget _pokemonList(Size size) {
-    // if (shownPokemon.length % (_cardType + 1) == 0) return Text('hi');
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -240,7 +239,6 @@ class _PokemonListState extends State<PokemonList>
 
   void _openFilterMenu() {
     setState(() => _openFilter = true);
-    return;
   }
 
   void _closeFilterMenu() {
@@ -306,9 +304,9 @@ class _PokemonListState extends State<PokemonList>
 
     if (POKEMON_TYPES.contains(input)) {
       _filterPokemonByType(input);
-
       return;
     }
+
     newPokemon = state.pokemons.where((e) {
       if (_includeEvolutions) {
         for (var x in e.species.evolutions) {
