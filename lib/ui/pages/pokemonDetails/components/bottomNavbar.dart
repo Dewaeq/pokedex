@@ -30,14 +30,14 @@ class _BottomNavbarState extends State<BottomNavbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(boxShadow: [
+      /* decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: Colors.grey.withOpacity(0.5),
           spreadRadius: 5,
           blurRadius: 7,
           offset: Offset(0, 3),
         ),
-      ]),
+      ]), */
       child: BottomNavigationBar(
         onTap: (value) {
           onPressed(value);
@@ -47,7 +47,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
         selectedItemColor: Colors.grey[800],
         backgroundColor: backGroundColor,
         showUnselectedLabels: false,
-        iconSize: 28,
+        iconSize: 24,
         selectedLabelStyle: TextStyle(fontSize: 16),
         unselectedIconTheme: IconThemeData(color: Colors.grey[700]),
         selectedIconTheme: IconThemeData(color: Colors.grey[800]),
