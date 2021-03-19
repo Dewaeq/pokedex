@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/extensions/string_extension.dart';
 import 'package:pokedex/model/Pokemon.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 
 class Helper {
   static String getDisplayName(String n) {
@@ -88,7 +88,7 @@ class Helper {
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         )),
-        backgroundColor: setSecondaryColor(pokemon.types[0]),
+        backgroundColor: setPrimaryColor(pokemon.types[0]),
         isScrollControlled: true,
         builder: (_) {
           return SingleChildScrollView(

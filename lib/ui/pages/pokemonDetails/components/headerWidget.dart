@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:pokedex/extensions/string_extension.dart';
 
@@ -91,7 +91,7 @@ class HeaderWidget extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 8),
                                 child:
-                                    _pokemonTypeWidget(e, setSecondaryColor(e)),
+                                    _pokemonTypeWidget(e, setPrimaryColor(e)),
                               ),
                             ),
                           )

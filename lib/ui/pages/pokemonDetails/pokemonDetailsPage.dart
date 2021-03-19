@@ -6,7 +6,7 @@ import 'package:pokedex/ui/pages/pokemonDetails/components/headerWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/evolutions/evolutionWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/info/infoWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/more/moreWidget.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 
 class PokemonDetailsPage extends StatefulWidget {
   final Pokemon pokemon;
@@ -27,7 +27,7 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
     return Scaffold(
       bottomNavigationBar: BottomNavbar(
         index: index,
-        backgroundColor: setSecondaryColor(pokemon.types.first),
+        backgroundColor: setPrimaryColor(pokemon.types.first),
         key: UniqueKey(),
         onPressed: (value) {
           controller.animateToPage(
@@ -37,7 +37,7 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
           );
         },
       ),
-      backgroundColor: setSecondaryColor(pokemon.types[0]),
+      backgroundColor: setPrimaryColor(pokemon.types[0]),
       body: SafeArea(
         child: Column(
           children: [

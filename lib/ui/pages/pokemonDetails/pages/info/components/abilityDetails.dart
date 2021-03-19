@@ -4,7 +4,7 @@ import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemon_card.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';
 
@@ -68,7 +68,7 @@ class AbilityDetails extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 20),
               decoration: BoxDecoration(
-                color: setSecondaryColor(pokemon.types[0]),
+                color: setPrimaryColor(pokemon.types[0]),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),

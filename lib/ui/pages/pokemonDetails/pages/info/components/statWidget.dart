@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonStat.dart';
 import 'package:pokedex/extensions/string_extension.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 
 class StatWidget extends StatelessWidget {
   final Pokemon pokemon;

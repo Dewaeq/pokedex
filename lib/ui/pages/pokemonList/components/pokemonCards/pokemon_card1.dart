@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:pokedex/extensions/string_extension.dart';
 
@@ -16,14 +16,16 @@ class PokemonCard1 extends StatelessWidget {
     @required this.onLongPressed,
   });
 
-  Widget _pokemonTypeWidget(String type, Color color) {
+  Widget _pokemonTypeWidget(String type) {
     if (type == null || type.isEmpty) return SizedBox();
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: color,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: Colors.grey[300].withOpacity(.4),
+        ),
       ),
       child: Text(
         type.capitalizeFirstofEach(),
@@ -67,14 +69,12 @@ class PokemonCard1 extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 5),
-                  _pokemonTypeWidget(
-                      pokemon.types[0], setSecondaryColor(pokemon.types[0])),
+                  _pokemonTypeWidget(pokemon.types[0]),
                   SizedBox(
                     height: 5,
                   ),
                   if (pokemon.types.length > 1)
-                    _pokemonTypeWidget(
-                        pokemon.types[1], setSecondaryColor(pokemon.types[0])),
+                    _pokemonTypeWidget(pokemon.types[1]),
                 ],
               ),
             ),

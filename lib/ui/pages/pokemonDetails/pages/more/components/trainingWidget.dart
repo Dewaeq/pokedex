@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/itemWithDescription.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 
 class TrainingWidget extends StatelessWidget {
@@ -35,6 +35,7 @@ class TrainingWidget extends StatelessWidget {
                     ),
                     TextSpan(
                       text: '  (5.9% - Pokéball - Full HP)',
+                      style: TextStyle(fontWeight: FontWeight.w300),
                     )
                   ],
                 ),

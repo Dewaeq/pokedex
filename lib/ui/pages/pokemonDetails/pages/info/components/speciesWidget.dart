@@ -16,9 +16,12 @@ class SpeciesWidget extends StatelessWidget {
           Container(
             width: double.infinity,
             child: ItemWithDescription(
-                child: Text(
-                  pokemon.species.description,
-                  textAlign: TextAlign.center,
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    pokemon.species.description,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 description: 'Pokédex description (from Pokémon Sword)'),
           ),

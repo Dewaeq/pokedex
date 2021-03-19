@@ -3,7 +3,7 @@ import 'package:pokedex/customIcons/pokedexIcons.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/itemWithDescription.dart';
-import 'package:pokedex/utils/color_theme.dart';
+import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 
 class BreedingWidget extends StatelessWidget {
@@ -173,6 +173,7 @@ class BreedingWidget extends StatelessWidget {
                     TextSpan(
                       text:
                           '  (${255 * (pokemon.species.hatchCounter + 1)} steps)',
+                      style: TextStyle(fontWeight: FontWeight.w300),
                     )
                   ],
                 ),

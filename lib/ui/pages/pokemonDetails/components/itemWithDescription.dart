@@ -29,7 +29,8 @@ class ItemWithDescription extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-                color: backgroundColor ?? Colors.grey.withOpacity(.4)),
+              color: backgroundColor ?? Colors.grey.withOpacity(.25),
+            ),
             color: backgroundColor,
           ),
           child: child,
@@ -38,7 +39,9 @@ class ItemWithDescription extends StatelessWidget {
         Text(
           description,
           style: TextStyle(
-            color: Colors.grey[700],
+            fontSize: 12,
+            color: Colors.black.withOpacity(.7),
+            fontWeight: FontWeight.w300,
           ),
         ),
       ],
