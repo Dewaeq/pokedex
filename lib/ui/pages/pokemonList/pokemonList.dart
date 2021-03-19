@@ -171,11 +171,11 @@ class _PokemonListState extends State<PokemonList>
         child: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.blueGrey[800]),
           onPressed: () {
-            _filterPokemon(_filters); // _searchPokemon('');
+            _filterPokemon(_filters);
             setState(() {
-              _searchController.text = '';
               _openSearch = false;
             });
+            _searchController.text = '';
             FocusScope.of(context).unfocus();
           },
         ),
@@ -266,8 +266,10 @@ class _PokemonListState extends State<PokemonList>
 
   void _filterPokemon(List<PokemonFilter> filters) {
     if (filters == null || filters.isEmpty) {
-      _filters = null;
-      setState(() => shownPokemon = state.pokemons);
+      setState(() {
+        shownPokemon = state.pokemons;
+        _filters = null;
+      });
       return;
     }
     _filters = filters;
@@ -293,8 +295,7 @@ class _PokemonListState extends State<PokemonList>
   }
 
   void _filterPokemonByGeneration(Map<String, dynamic> options) {
-    var newPokemon = <Pokemon>[];
-    newPokemon = shownPokemon
+    var newPokemon = state.pokemons
         .where((e) => e.species.generationId == options['id'])
         .toList();
 
@@ -304,11 +305,11 @@ class _PokemonListState extends State<PokemonList>
   void _filterPokemonByStat(Map<String, dynamic> options) {
     var newPokemon = <Pokemon>[];
     if (options['mode'] == ValueFilterType.HIGHER_THEN) {
-      newPokemon = shownPokemon
+      newPokemon = state.pokemons
           .where((e) => e.stats[options['index']].baseStat >= options['value'])
           .toList();
     } else {
-      newPokemon = shownPokemon
+      newPokemon = state.pokemons
           .where((e) => e.stats[0].baseStat < options['value'])
           .toList();
     }
