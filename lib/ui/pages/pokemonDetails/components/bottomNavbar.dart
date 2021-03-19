@@ -44,13 +44,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
           if (value != index) setState(() => index = value);
         },
         currentIndex: index,
-        selectedItemColor: Colors.grey[800],
+        selectedItemColor: Colors.black87,
         backgroundColor: backGroundColor,
         showUnselectedLabels: false,
         iconSize: 24,
         selectedLabelStyle: TextStyle(fontSize: 16),
-        unselectedIconTheme: IconThemeData(color: Colors.grey[700]),
-        selectedIconTheme: IconThemeData(color: Colors.grey[800]),
+        unselectedIconTheme: IconThemeData(color: Colors.black.withOpacity(.5)),
+        selectedIconTheme: IconThemeData(color: Colors.black87),
         items: [
           BottomNavigationBarItem(
             label: 'Information',

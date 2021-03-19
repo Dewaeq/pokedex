@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/constants/constants.dart';
 import 'package:pokedex/customIcons/pokedexIcons.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
@@ -90,13 +91,14 @@ class BreedingWidget extends StatelessWidget {
                     Spacer(),
                     Text(
                       Helper.getDisplayName(name),
+                      style: TextStyle(color: Colors.black87),
                     ),
                     Spacer(),
                   ],
                 ),
                 Positioned(
                   right: 10,
-                  child: Icon(Icons.info_outline),
+                  child: Icon(Icons.info_outline, color: Colors.black87),
                 ),
               ],
             ),
@@ -183,13 +185,36 @@ class BreedingWidget extends StatelessWidget {
             SizedBox(height: 15),
             ItemWithDescription(
               child: Text(
-                Helper.getDisplayName(pokemon.species.habitat ?? 'Unknown'),
+                Helper.getDisplayName(pokemon.species.habitat ?? 'Unkown'),
                 style: TextStyle(
                   color: setPrimaryColor(pokemon.types.first),
                   fontWeight: FontWeight.w600,
                 ),
               ),
               description: 'Habitat',
+            ),
+            SizedBox(height: 15),
+            ItemWithDescription(
+              child: Text(
+                Helper.getDisplayName(pokemon.species.region ?? 'Unknown'),
+                style: TextStyle(
+                  color: setPrimaryColor(pokemon.types.first),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              description: 'Region',
+            ),
+            SizedBox(height: 15),
+            ItemWithDescription(
+              child: Text(
+                Helper.getGenerationName(GENERATIONS.firstWhere(
+                    (e) => e['id'] == pokemon.species.generationId)['name']),
+                style: TextStyle(
+                  color: setPrimaryColor(pokemon.types.first),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              description: 'Generation',
             ),
           ],
         ),

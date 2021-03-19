@@ -56,7 +56,7 @@ class AbilitiesWidget extends StatelessWidget {
                 child: Text(
                   ability.isHidden ? 'Hidden' : '',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[850]),
+                  style: TextStyle(color: Colors.black87),
                 ),
               ),
             ),
@@ -68,7 +68,7 @@ class AbilitiesWidget extends StatelessWidget {
                 style: TextStyle(
                   color: ability.isHidden
                       ? setPrimaryColor(pokemon.types.first)
-                      : Colors.grey[850],
+                      : Colors.black87,
                   fontWeight: FontWeight.w500,
                   fontSize: 15,
                 ),
@@ -78,7 +78,7 @@ class AbilitiesWidget extends StatelessWidget {
               flex: 1,
               child: Icon(
                 Icons.info_outline,
-                color: Colors.grey[700],
+                color: Colors.black87,
               ),
             ),
           ],
