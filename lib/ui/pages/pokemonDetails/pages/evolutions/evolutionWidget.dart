@@ -55,7 +55,7 @@ class EvolutionWidget extends StatelessWidget {
   Widget _pokemonItem(BuildContext context, Size size, int flex, Pokemon p) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: FlatButton(
+      child: MaterialButton(
         onPressed: () {
           if (p.name != pokemon.name) {
             Navigator.push(

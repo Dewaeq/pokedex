@@ -34,6 +34,7 @@ class AbilitiesWidget extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       height: 40,
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: ability.isHidden
             ? Colors.white60
@@ -49,13 +50,7 @@ class AbilitiesWidget extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    topLeft: Radius.circular(8),
-                  ),
-                  color: setPrimaryColor(pokemon.types.first),
-                ),
+                color: setPrimaryColor(pokemon.types.first),
                 height: double.infinity,
                 alignment: Alignment.center,
                 child: Text(

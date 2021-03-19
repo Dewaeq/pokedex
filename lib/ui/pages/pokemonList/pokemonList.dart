@@ -38,27 +38,36 @@ class _PokemonListState extends State<PokemonList>
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          RaisedButton(
+          ElevatedButton(
             onPressed: () {
               animate();
               onPressed();
             },
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              onPrimary: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            child: Text(title),
+            child: Text(
+              title,
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           SizedBox(
             height: 40,
-            child: RaisedButton(
+            child: ElevatedButton(
               onPressed: () {
                 animate();
                 onPressed();
               },
-              shape: CircleBorder(),
-              color: Colors.white,
-              child: Icon(icon),
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+                primary: Colors.white,
+                onPrimary: Colors.black,
+              ),
+              child: Icon(icon, color: Colors.black),
             ),
           ),
         ],

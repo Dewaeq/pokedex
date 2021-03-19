@@ -36,17 +36,19 @@ class MainPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => PokemonList()),
                 );
               },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                primary: Colors.deepPurpleAccent,
               ),
-              color: Colors.deepPurpleAccent,
               child: Text(
                 'All Pokémon',
                 style: TextStyle(
@@ -54,12 +56,14 @@ class MainPage extends StatelessWidget {
                 ),
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {},
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                primary: Colors.deepPurpleAccent,
               ),
-              color: Colors.deepPurpleAccent,
               child: Text(
                 'Abilities',
                 style: TextStyle(

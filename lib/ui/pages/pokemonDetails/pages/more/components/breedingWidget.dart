@@ -68,25 +68,38 @@ class BreedingWidget extends StatelessWidget {
     }
     return Expanded(
       child: Container(
-        padding: padding,
-        child: FlatButton(
-          onPressed: () {},
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+        margin: padding,
+        height: 35,
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
           color: setPrimaryColor(pokemon.types.first),
+        ),
+        child: MaterialButton(
+          onPressed: () {},
+          elevation: 0,
           padding: EdgeInsets.zero,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Spacer(),
-              Text(
-                Helper.getDisplayName(name),
-              ),
-              Spacer(),
-              Icon(Icons.info_outline),
-              SizedBox(width: 8),
-            ],
+          child: SizedBox(
+            height: 40,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Spacer(),
+                    Text(
+                      Helper.getDisplayName(name),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+                Positioned(
+                  right: 10,
+                  child: Icon(Icons.info_outline),
+                ),
+              ],
+            ),
           ),
         ),
       ),

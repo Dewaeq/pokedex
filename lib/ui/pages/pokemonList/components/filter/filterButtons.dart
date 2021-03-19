@@ -7,10 +7,10 @@ class ApplyFiltersButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      child: FlatButton(
+      child: MaterialButton(
         onPressed: filter,
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        minWidth: double.infinity,
         color: Colors.deepPurpleAccent,
         child: SizedBox(
           width: double.infinity,
@@ -43,10 +43,13 @@ class ResetFiltersButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      child: OutlineButton(
+      child: MaterialButton(
         onPressed: resetFilters,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        highlightedBorderColor: Colors.grey,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(color: Colors.grey.withOpacity(.4)),
+        ),
         child: SizedBox(
           width: double.infinity,
           child: Stack(
