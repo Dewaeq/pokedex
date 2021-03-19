@@ -337,6 +337,8 @@ class _PokemonListState extends State<PokemonList>
       newPokemon = Helper.sortPokemon(newPokemon);
     }
 
+    if (_filters != null) _filterPokemon(_filters);
+
     setState(() {
       shownPokemon = newPokemon;
     });
