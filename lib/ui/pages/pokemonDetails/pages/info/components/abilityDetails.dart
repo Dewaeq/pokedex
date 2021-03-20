@@ -132,8 +132,8 @@ class AbilityDetails extends StatelessWidget {
                           SizedBox(height: 10),
                         ] +
                         ability.ability.pokemon.map((pName) {
-                          var p =
-                              state.pokemons.firstWhere((e) => e.name == pName);
+                          var p = state.pokemons
+                              .firstWhere((e) => e.name.contains(pName));
                           return Container(
                             height: 130,
                             padding: EdgeInsets.symmetric(
