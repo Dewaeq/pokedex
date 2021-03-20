@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/more/components/breedingWidget.dart';
+import 'package:pokedex/ui/pages/pokemonDetails/pages/more/components/groupingWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/more/components/trainingWidget.dart';
 
 class MoreWidget extends StatelessWidget {
@@ -16,6 +17,8 @@ class MoreWidget extends StatelessWidget {
             TrainingWidget(pokemon: pokemon),
             SizedBox(height: 20),
             BreedingWidget(pokemon: pokemon),
+            SizedBox(height: 20),
+            GroupingWidget(pokemon: pokemon),
             SizedBox(height: 20),
           ],
         ),

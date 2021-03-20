@@ -35,8 +35,11 @@ class TrainingWidget extends StatelessWidget {
                     ),
                     TextSpan(
                       text: '  (5.9% - Pokéball - Full HP)',
-                      style: TextStyle(fontWeight: FontWeight.w300),
-                    )
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.blueGrey[900].withOpacity(.9),
+                      ),
+                    ),
                   ],
                 ),
               ),

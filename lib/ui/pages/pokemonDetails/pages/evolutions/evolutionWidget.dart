@@ -72,8 +72,8 @@ class EvolutionWidget extends StatelessWidget {
               Helper.getDisplayName(p.name),
               style: TextStyle(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.blueGrey[900],
+                fontWeight: FontWeight.w500,
+                color: Colors.blueGrey[900].withOpacity(.9),
               ),
             ),
             SizedBox(height: 15),

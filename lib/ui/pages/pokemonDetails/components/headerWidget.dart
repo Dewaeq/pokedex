@@ -55,9 +55,9 @@ class HeaderWidget extends StatelessWidget {
                   Text(
                     Helper.getDisplayName(pokemon.name),
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 22,
                       fontWeight: FontWeight.w600,
-                      color: Colors.grey[800],
+                      color: Colors.blueGrey[800].withOpacity(.8),
                     ),
                   ),
                   Container(

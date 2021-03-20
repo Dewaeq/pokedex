@@ -14,6 +14,7 @@ class DetailItem extends StatelessWidget {
             title,
             style: TextStyle(
               fontSize: 18,
+              color: Colors.blueGrey[900].withOpacity(.8),
             ),
           ),
           SizedBox(height: 10),

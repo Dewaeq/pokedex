@@ -17,10 +17,13 @@ class SpeciesWidget extends StatelessWidget {
             width: double.infinity,
             child: ItemWithDescription(
                 child: Padding(
-                  padding: const EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5),
                   child: Text(
                     pokemon.species.description,
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.blueGrey[900].withOpacity(.9),
+                    ),
                   ),
                 ),
                 description: 'Pokédex description (from Pokémon Sword)'),
@@ -33,6 +36,9 @@ class SpeciesWidget extends StatelessWidget {
                   child: Text(
                     '${pokemon.height / 10} m',
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.blueGrey[900].withOpacity(.9),
+                    ),
                   ),
                   description: 'Height',
                 ),
@@ -43,6 +49,9 @@ class SpeciesWidget extends StatelessWidget {
                   child: Text(
                     '${pokemon.weight / 10} kg',
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.blueGrey[900].withOpacity(.9),
+                    ),
                   ),
                   description: 'Weight',
                 ),

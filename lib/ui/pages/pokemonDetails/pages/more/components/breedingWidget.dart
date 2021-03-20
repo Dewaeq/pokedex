@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/constants/constants.dart';
 import 'package:pokedex/customIcons/pokedexIcons.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
@@ -126,6 +125,7 @@ class BreedingWidget extends StatelessWidget {
                       'Genderless',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
+                        color: Colors.blueGrey[900].withOpacity(.9),
                       ),
                     )
                   : _genderRatio(),
@@ -133,12 +133,17 @@ class BreedingWidget extends StatelessWidget {
             ),
             SizedBox(height: 15),
             ItemWithDescription(
+              padding: false,
+              backgroundColor: Colors.grey[50],
               child: pokemon.species.eggGroups.isEmpty
                   ? Container(
                       height: 40,
                       width: double.infinity,
                       alignment: Alignment.center,
-                      color: setPrimaryColor(pokemon.types.first),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: setPrimaryColor(pokemon.types.first),
+                      ),
                       child: Text(
                         'No egg groups',
                         style: TextStyle(
@@ -152,8 +157,6 @@ class BreedingWidget extends StatelessWidget {
                           .map((e) => _eggGroup(e))
                           .toList(),
                     ),
-              padding: false,
-              backgroundColor: Colors.grey[50],
               description: 'Egg Groups',
             ),
             SizedBox(height: 15),
@@ -162,7 +165,6 @@ class BreedingWidget extends StatelessWidget {
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
                   ),
                   children: [
                     TextSpan(
@@ -175,7 +177,10 @@ class BreedingWidget extends StatelessWidget {
                     TextSpan(
                       text:
                           '  (${255 * (pokemon.species.hatchCounter + 1)} steps)',
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.blueGrey[900].withOpacity(.9),
+                      ),
                     )
                   ],
                 ),
@@ -194,28 +199,6 @@ class BreedingWidget extends StatelessWidget {
               description: 'Habitat',
             ),
             SizedBox(height: 15),
-            ItemWithDescription(
-              child: Text(
-                Helper.getDisplayName(pokemon.species.region ?? 'Unknown'),
-                style: TextStyle(
-                  color: setPrimaryColor(pokemon.types.first),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              description: 'Region',
-            ),
-            SizedBox(height: 15),
-            ItemWithDescription(
-              child: Text(
-                Helper.getGenerationName(GENERATIONS.firstWhere(
-                    (e) => e['id'] == pokemon.species.generationId)['name']),
-                style: TextStyle(
-                  color: setPrimaryColor(pokemon.types.first),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              description: 'Generation',
-            ),
           ],
         ),
       ),

@@ -21,7 +21,7 @@ class StatWidget extends StatelessWidget {
               style: TextStyle(
                 color: Colors.grey[850],
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -47,7 +47,7 @@ class StatWidget extends StatelessWidget {
                       '${stat.baseStat}',
                       style: TextStyle(
                         color: Colors.grey[850],
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -72,12 +72,18 @@ class StatWidget extends StatelessWidget {
             RichText(
               text: TextSpan(
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.blueGrey[800],
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                 ),
                 children: [
-                  TextSpan(text: 'TOTAL   '),
+                  TextSpan(
+                    text: 'TOTAL  ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  ),
                   TextSpan(
                     text: '$totalStats',
                     style: TextStyle(
