@@ -7,9 +7,9 @@ import 'package:pokedex/ui/pages/pokemonList/components/filter/filterButtons.dar
 import 'package:pokedex/utils/helper.dart';
 
 class FilterWidget extends StatefulWidget {
-  final Function(List<PokemonFilter>) filter;
+  final Function(Set<PokemonFilter>) filter;
   final Function onClosed;
-  final List<PokemonFilter> filters;
+  final Set<PokemonFilter> filters;
   FilterWidget({
     @required this.filter,
     @required this.onClosed,
@@ -45,9 +45,10 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   Set<String> enabledFilters = Set<String>();
 
-  var filters = <PokemonFilter>[];
+  Set<PokemonFilter> filters = Set<PokemonFilter>();
 
   void filter() {
+    filters.clear();
     if (enabledFilters.contains('type')) {
       filters.add(PokemonFilter(
         filterType: FilterType.FILTER_BY_TYPE,

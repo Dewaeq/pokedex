@@ -26,7 +26,7 @@ class _PokemonListState extends State<PokemonList>
   bool _includeEvolutions = false;
   List<Pokemon> shownPokemon;
   List<Pokemon> filteredPokemon;
-  List<PokemonFilter> _filters;
+  Set<PokemonFilter> _filters;
   PokemonState state;
 
   TextEditingController _searchController = TextEditingController();
@@ -42,7 +42,7 @@ class _PokemonListState extends State<PokemonList>
         children: [
           ElevatedButton(
             onPressed: () {
-              animate();
+              _animate();
               onPressed();
             },
             style: ElevatedButton.styleFrom(
@@ -61,7 +61,7 @@ class _PokemonListState extends State<PokemonList>
             height: 40,
             child: ElevatedButton(
               onPressed: () {
-                animate();
+                _animate();
                 onPressed();
               },
               style: ElevatedButton.styleFrom(
@@ -79,7 +79,7 @@ class _PokemonListState extends State<PokemonList>
 
   Widget _floatingActionButton() {
     return FloatingActionButton(
-      onPressed: animate,
+      onPressed: _animate,
       backgroundColor: _open ? Colors.white : Colors.deepPurpleAccent,
       child: AnimatedIcon(
         icon: AnimatedIcons.menu_close,
@@ -172,9 +172,7 @@ class _PokemonListState extends State<PokemonList>
           icon: Icon(Icons.arrow_back, color: Colors.blueGrey[800]),
           onPressed: () {
             _filterPokemon(_filters);
-            setState(() {
-              _openSearch = false;
-            });
+            setState(() => _openSearch = false);
             _searchController.text = '';
             FocusScope.of(context).unfocus();
           },
@@ -212,7 +210,7 @@ class _PokemonListState extends State<PokemonList>
                 )
               : SliverGrid.count(
                   crossAxisCount: _cardType + 1,
-                  childAspectRatio: 1.2,
+                  childAspectRatio: 1.1,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   children: List<Widget>.from(shownPokemon.map(
@@ -248,9 +246,8 @@ class _PokemonListState extends State<PokemonList>
       padding: const EdgeInsets.only(top: 20),
       child: ResetFiltersButton(
         resetFilters: () {
-          _searchController.text = '';
           setState(() => _filters = null);
-          _filterPokemon(_filters);
+          _resetPokemon();
         },
       ),
     );
@@ -264,17 +261,20 @@ class _PokemonListState extends State<PokemonList>
     setState(() => _openFilter = false);
   }
 
-  void _filterPokemon(List<PokemonFilter> filters) {
+  /// Filter all the pokemon with a Set of PokemonFilters
+  void _filterPokemon(Set<PokemonFilter> filters) {
     if (filters == null || filters.isEmpty) {
+      _resetPokemon();
       setState(() {
-        shownPokemon = state.pokemons;
         _filters = null;
+        if (_openSearch) _openSearch = false;
       });
       return;
     }
     _filters = filters;
-    shownPokemon = state.pokemons;
-    _searchController.text = '';
+
+    /// Reset all the pokemon so we filter with a clean start
+    _resetPokemon();
 
     for (var filter in filters) {
       if (filter.filterType == FilterType.FILTER_BY_TYPE) {
@@ -282,34 +282,41 @@ class _PokemonListState extends State<PokemonList>
       } else if (filter.mode == FilterType.FILTER_STAT) {
         _filterPokemonByStat(filter.options);
       } else if (filter.filterType == FilterType.FILTER_BY_GENERATION) {
-        _filterPokemonByGeneration(filter.options);
+        _filterPokemonByGeneration(filter.options['id']);
       }
     }
     filteredPokemon = shownPokemon;
   }
 
+  /// Filter all the pokemon by their type.
+  /// * `pokemonType` is a String
   void _filterPokemonByType(String pokemonType) {
     var newPokemon =
-        state.pokemons.where((e) => e.types.contains(pokemonType)).toList();
+        shownPokemon.where((e) => e.types.contains(pokemonType)).toList();
     setState(() => shownPokemon = newPokemon);
   }
 
-  void _filterPokemonByGeneration(Map<String, dynamic> options) {
-    var newPokemon = state.pokemons
-        .where((e) => e.species.generationId == options['id'])
+  /// Filter all the pokemon by their generation.
+  /// * `generationId` is an int starting from 1
+  void _filterPokemonByGeneration(int generationId) {
+    var newPokemon = shownPokemon
+        .where((e) => e.species.generationId == generationId)
         .toList();
 
     setState(() => shownPokemon = newPokemon);
   }
 
+  /// Filter all the pokemon by their stat
+  /// * `options` is a Map with a `ValueFilterType` in the mode key
+  /// and an `int` which represents the stat's value in the value key
   void _filterPokemonByStat(Map<String, dynamic> options) {
     var newPokemon = <Pokemon>[];
     if (options['mode'] == ValueFilterType.HIGHER_THEN) {
-      newPokemon = state.pokemons
+      newPokemon = shownPokemon
           .where((e) => e.stats[options['index']].baseStat >= options['value'])
           .toList();
     } else {
-      newPokemon = state.pokemons
+      newPokemon = shownPokemon
           .where((e) => e.stats[0].baseStat < options['value'])
           .toList();
     }
@@ -318,7 +325,10 @@ class _PokemonListState extends State<PokemonList>
 
   void _searchPokemon(String input) {
     if (input == '') {
-      setState(() => shownPokemon = state.pokemons);
+      if (_filters != null)
+        _filterPokemon(_filters);
+      else
+        _resetPokemon();
       return;
     }
     input = input.trim().toLowerCase();
@@ -364,6 +374,13 @@ class _PokemonListState extends State<PokemonList>
     });
   }
 
+  /// Reset the searchField's text and set `shownPokemon` to `state.pokemons`
+  void _resetPokemon() {
+    _searchController.text = '';
+    FocusScope.of(context).unfocus();
+    setState(() => shownPokemon = state.pokemons);
+  }
+
   void scrollToTop() {
     _scrollController.animateTo(
       0.0,
@@ -372,7 +389,7 @@ class _PokemonListState extends State<PokemonList>
     );
   }
 
-  void animate() {
+  void _animate() {
     if (!_open) {
       _animationController.forward();
     } else
