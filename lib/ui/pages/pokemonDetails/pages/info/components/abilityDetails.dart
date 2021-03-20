@@ -148,7 +148,10 @@ class AbilityDetails extends StatelessWidget {
                                       PokemonDetailsPage(pokemon: p),
                                 ),
                               ),
-                              onLongPressed: () {},
+                              onLongPressed: () {
+                                Helper.showShortPokemonDetails(
+                                    context, size, pokemon);
+                              },
                             ),
                           );
                         }).toList(),
