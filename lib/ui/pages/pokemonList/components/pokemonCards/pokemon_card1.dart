@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/model/Pokemon.dart';
@@ -59,8 +60,9 @@ class PokemonCard1 extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  AutoSizeText(
                     Helper.getDisplayName(pokemon.name),
+                    maxLines: 2,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

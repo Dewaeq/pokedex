@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/extensions/string_extension.dart';
@@ -108,14 +109,17 @@ class Helper {
                       children: [
                         Container(
                           padding: EdgeInsets.only(left: 30, top: 80),
-                          width: size.width * 0.5,
-                          child: Text(
+                          width: size.width * 0.4,
+                          child: AutoSizeText(
                             Helper.getDisplayName(pokemon.name),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.w800,
                             ),
+                            maxFontSize: 24,
+                            wrapWords: false,
+                            maxLines: 3,
                           ),
                         ),
                         SizedBox(width: 10),

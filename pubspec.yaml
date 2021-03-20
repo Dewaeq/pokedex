@@ -32,6 +32,7 @@ dependencies:
   provider:
   cached_network_image:
   flutter_keyboard_visibility:
+  auto_size_text:
 
 dev_dependencies:
   flutter_test:
