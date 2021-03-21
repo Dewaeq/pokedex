@@ -8,7 +8,7 @@ import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/filter/filterButtons.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/filter/filterWidget.dart';
-import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemon_card.dart';
+import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemonCard.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';
 
