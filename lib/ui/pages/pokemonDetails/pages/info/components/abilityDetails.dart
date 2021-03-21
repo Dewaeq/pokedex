@@ -59,7 +59,7 @@ class AbilityDetails extends StatelessWidget {
         .toList());
 
     return Container(
-      height: size.height * 0.75,
+      height: size.height * 0.85,
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
