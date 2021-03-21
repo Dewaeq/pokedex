@@ -3,6 +3,7 @@ import 'package:pokedex/customIcons/pokedexIcons.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/itemWithDescription.dart';
+import 'package:pokedex/ui/pages/pokemonDetails/pages/more/components/eggGroupDetails.dart';
 import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 
@@ -12,52 +13,56 @@ class BreedingWidget extends StatelessWidget {
 
   Widget _genderRatio() {
     int left = ((8 - pokemon.species.genderRate) / 8 * 100).round();
-    if (left > 70) left = 70;
+    int leftWidth = left > 70 ? 70 : left;
     return Container(
       child: Row(
         children: [
-          Expanded(
-            flex: left,
-            child: Container(
-              height: 30,
-              color: Colors.blue,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    PokedexIcons.male,
-                    size: 20,
+          left == 0
+              ? Container()
+              : Expanded(
+                  flex: leftWidth,
+                  child: Container(
+                    height: 30,
+                    color: Colors.blue,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          PokedexIcons.male,
+                          size: 20,
+                        ),
+                        SizedBox(width: 14),
+                        Text('${(8 - pokemon.species.genderRate) / 8 * 100}%'),
+                      ],
+                    ),
                   ),
-                  SizedBox(width: 14),
-                  Text('${(8 - pokemon.species.genderRate) / 8 * 100}%'),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 100 - left,
-            child: Container(
-              height: 30,
-              color: Colors.red[300],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('${pokemon.species.genderRate / 8 * 100}%'),
-                  SizedBox(width: 14),
-                  Icon(
-                    PokedexIcons.female,
-                    size: 20,
+                ),
+          left == 100
+              ? Container()
+              : Expanded(
+                  flex: 100 - leftWidth,
+                  child: Container(
+                    height: 30,
+                    color: Colors.red[300],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('${pokemon.species.genderRate / 8 * 100}%'),
+                        SizedBox(width: 14),
+                        Icon(
+                          PokedexIcons.female,
+                          size: 20,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
         ],
       ),
     );
   }
 
-  Widget _eggGroup(String name) {
+  Widget _eggGroup(BuildContext context, String name) {
     EdgeInsets padding;
     if (pokemon.species.eggGroups.length == 1) {
       padding = EdgeInsets.zero;
@@ -76,7 +81,21 @@ class BreedingWidget extends StatelessWidget {
           color: setPrimaryColor(pokemon.types.first),
         ),
         child: MaterialButton(
-          onPressed: () {},
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                clipBehavior: Clip.hardEdge,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                )),
+                backgroundColor: Colors.white,
+                isScrollControlled: true,
+                isDismissible: true,
+                builder: (context) =>
+                    EggGroupDetails(pokemon: pokemon, eggGroupName: name));
+          },
           elevation: 0,
           padding: EdgeInsets.zero,
           child: SizedBox(
@@ -154,7 +173,7 @@ class BreedingWidget extends StatelessWidget {
                     )
                   : Row(
                       children: pokemon.species.eggGroups
-                          .map((e) => _eggGroup(e))
+                          .map((e) => _eggGroup(context, e))
                           .toList(),
                     ),
               description: 'Egg Groups',
