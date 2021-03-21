@@ -151,7 +151,7 @@ class Helper {
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                         child: Text(
-                          pokemon.species.description.replaceAll('\n', ' '),
+                          pokemon.species.description,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

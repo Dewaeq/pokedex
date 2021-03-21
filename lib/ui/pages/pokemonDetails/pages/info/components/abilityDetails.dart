@@ -54,6 +54,10 @@ class AbilityDetails extends StatelessWidget {
 
     if (!state.gotData) return CircularProgressIndicator();
 
+    final pokemonWithThisAbility = Helper.sortPokemon(state.pokemons
+        .where((e) => ability.ability.pokemon.contains(e.name))
+        .toList());
+
     return Container(
       height: size.height * 0.75,
       child: CustomScrollView(
@@ -121,40 +125,34 @@ class AbilityDetails extends StatelessWidget {
                   ),
                   child: Column(
                     children: <Widget>[
-                          Text(
-                            'POKEMON WITH THIS ABILITY',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.blueGrey,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                        ] +
-                        ability.ability.pokemon.map((pName) {
-                          var p = state.pokemons
-                              .firstWhere((e) => e.name.contains(pName));
-                          return Container(
-                            height: 130,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 8),
-                            child: PokemonCard(
-                              cardType: 1,
-                              pokemon: p,
-                              onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      PokemonDetailsPage(pokemon: p),
-                                ),
+                      Text(
+                        'POKEMON WITH THIS ABILITY',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blueGrey,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ]..addAll(pokemonWithThisAbility.map((p) {
+                        return Container(
+                          height: 130,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                          child: PokemonCard(
+                            cardType: 1,
+                            pokemon: p,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => PokemonDetailsPage(pokemon: p),
                               ),
-                              onLongPressed: () {
-                                Helper.showShortPokemonDetails(
-                                    context, size, p);
-                              },
                             ),
-                          );
-                        }).toList(),
+                            onLongPressed: () => Helper.showShortPokemonDetails(
+                                context, size, p),
+                          ),
+                        );
+                      }).toList()),
                   ),
                 ),
               ],

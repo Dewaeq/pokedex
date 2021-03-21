@@ -48,6 +48,7 @@ class PokemonCard1 extends StatelessWidget {
       onLongPress: onLongPressed,
       padding: EdgeInsets.zero,
       color: setPrimaryColor(pokemon.types[0]),
+      highlightElevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
