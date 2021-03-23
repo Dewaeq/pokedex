@@ -68,6 +68,41 @@ class MenuWidget extends StatelessWidget {
     );
   }
 
+  Widget _menuButton() {
+    return MaterialButton(
+      onPressed: () {},
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(
+          color: Colors.grey.withOpacity(.25),
+        ),
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Text(
+              'HOME',
+              style: TextStyle(
+                color: setPrimaryColor(pokemon.types.first),
+                fontSize: 16,
+              ),
+            ),
+            Positioned(
+              left: 0,
+              child: Icon(
+                Icons.home,
+                color: setPrimaryColor(pokemon.types.first),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -95,38 +130,7 @@ class MenuWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Column(
             children: [
-              MaterialButton(
-                onPressed: () {},
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(
-                    color: Colors.grey.withOpacity(.25),
-                  ),
-                ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Text(
-                        'HOME',
-                        style: TextStyle(
-                          color: setPrimaryColor(pokemon.types.first),
-                          fontSize: 16,
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        child: Icon(
-                          Icons.home,
-                          color: setPrimaryColor(pokemon.types.first),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              _menuButton(),
               _pokemonCard(context, size, false, nextPokemon),
               SizedBox(height: 15),
               _pokemonCard(context, size, true, previousPokemon),
