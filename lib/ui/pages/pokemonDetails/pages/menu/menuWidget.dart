@@ -60,7 +60,7 @@ class MenuWidget extends StatelessWidget {
             onPressed: () => navigatorKey.currentState.push(
               MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
             ),
-            onLongPressed: () => Helper.showShortPokemonDetails(pokemon),
+            onLongPressed: () => Helper.showShortPokemonDetails(p),
           ),
         ),
       ],
