@@ -5,6 +5,7 @@ import 'package:pokedex/ui/pages/pokemonDetails/components/bottomNavbar.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/headerWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/evolutions/evolutionWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/info/infoWidget.dart';
+import 'package:pokedex/ui/pages/pokemonDetails/pages/menu/MenuWidget.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pages/more/moreWidget.dart';
 import 'package:pokedex/utils/colorTheme.dart';
 
@@ -25,6 +26,7 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: setPrimaryColor(pokemon.types[0]),
       bottomNavigationBar: BottomNavbar(
         index: index,
         backgroundColor: setPrimaryColor(pokemon.types.first),
@@ -37,7 +39,6 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
           );
         },
       ),
-      backgroundColor: setPrimaryColor(pokemon.types[0]),
       body: SafeArea(
         child: Column(
           children: [
@@ -50,6 +51,7 @@ class _PokemonDetailsPageState extends State<PokemonDetailsPage> {
                   InfoWidget(pokemon: pokemon),
                   EvolutionWidget(pokemon: pokemon),
                   MoreWidget(pokemon: pokemon),
+                  MenuWidget(pokemon: pokemon),
                 ],
               ),
             ),
