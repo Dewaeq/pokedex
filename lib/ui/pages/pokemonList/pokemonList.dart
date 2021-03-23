@@ -411,7 +411,7 @@ class _PokemonListState extends State<PokemonList>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    state = Provider.of<PokemonState>(context);
+    state ??= Provider.of<PokemonState>(context);
     if (!state.isBusy && !state.gotData) state.init();
 
     if (state == null || !state.gotData) {

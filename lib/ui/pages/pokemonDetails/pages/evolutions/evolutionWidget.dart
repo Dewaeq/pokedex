@@ -105,7 +105,7 @@ class EvolutionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    state = Provider.of<PokemonState>(context);
+    state ??= Provider.of<PokemonState>(context);
     if (!state.isBusy && !state.gotData) state.init();
 
     if (!state.gotData) return CircularProgressIndicator();
