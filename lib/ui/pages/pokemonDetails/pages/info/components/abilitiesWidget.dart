@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/state/PokemonState.dart';
@@ -13,8 +14,8 @@ class AbilitiesWidget extends StatelessWidget {
   PokemonState state;
   AbilitiesWidget({@required this.pokemon});
 
-  void showAbilityDetails(
-      BuildContext context, Size size, PokemonAbility ability) {
+  void showAbilityDetails(Size size, PokemonAbility ability) {
+    final context = navigatorKey.currentContext;
     showModalBottomSheet(
         context: context,
         clipBehavior: Clip.hardEdge,
@@ -29,8 +30,7 @@ class AbilitiesWidget extends StatelessWidget {
         builder: (_) => AbilityDetails(pokemon: pokemon, ability: ability));
   }
 
-  Widget _abilityWidget(
-      Size size, BuildContext context, PokemonAbility ability) {
+  Widget _abilityWidget(Size size, PokemonAbility ability) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       height: 40,
@@ -44,7 +44,7 @@ class AbilitiesWidget extends StatelessWidget {
       ),
       child: MaterialButton(
         padding: EdgeInsets.zero,
-        onPressed: () => showAbilityDetails(context, size, ability),
+        onPressed: () => showAbilityDetails(size, ability),
         child: Row(
           children: [
             Expanded(
@@ -100,9 +100,8 @@ class AbilitiesWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       width: double.infinity,
       child: Column(
-        children: pokemon.abilities
-            .map((e) => _abilityWidget(size, context, e))
-            .toList(),
+        children:
+            pokemon.abilities.map((e) => _abilityWidget(size, e)).toList(),
       ),
     );
   }

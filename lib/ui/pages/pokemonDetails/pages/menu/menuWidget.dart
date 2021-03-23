@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
@@ -12,8 +13,7 @@ class MenuWidget extends StatelessWidget {
   final Pokemon pokemon;
   MenuWidget({@required this.pokemon});
 
-  Widget _pokemonCard(
-      BuildContext context, Size size, bool previousPokemon, Pokemon p) {
+  Widget _pokemonCard(bool previousPokemon, Pokemon p) {
     if (p == null) return Container();
 
     return Column(
@@ -56,12 +56,10 @@ class MenuWidget extends StatelessWidget {
           child: PokemonCard(
             cardType: 1,
             pokemon: p,
-            onPressed: () => Navigator.push(
-              context,
+            onPressed: () => navigatorKey.currentState.push(
               MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
             ),
-            onLongPressed: () =>
-                Helper.showShortPokemonDetails(context, pokemon),
+            onLongPressed: () => Helper.showShortPokemonDetails(pokemon),
           ),
         ),
       ],
@@ -70,8 +68,6 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     final state = Provider.of<PokemonState>(context);
     if (!state.isBusy && !state.gotData) state.init();
 
@@ -127,9 +123,9 @@ class MenuWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              _pokemonCard(context, size, false, nextPokemon),
+              _pokemonCard(false, nextPokemon),
               SizedBox(height: 15),
-              _pokemonCard(context, size, true, previousPokemon),
+              _pokemonCard(true, previousPokemon),
               SizedBox(height: 7),
             ],
           ),

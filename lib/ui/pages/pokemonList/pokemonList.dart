@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pokedex/constants/constants.dart';
 import 'package:pokedex/constants/filterTypes.dart';
+import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonFilter.dart';
 import 'package:pokedex/state/PokemonState.dart';
@@ -217,14 +218,12 @@ class _PokemonListState extends State<PokemonList>
                     (e) => PokemonCard(
                       cardType: 1,
                       pokemon: e,
-                      onPressed: () => Navigator.push(
-                        context,
+                      onPressed: () => navigatorKey.currentState.push(
                         MaterialPageRoute(
                           builder: (_) => PokemonDetailsPage(pokemon: e),
                         ),
                       ),
-                      onLongPressed: () =>
-                          Helper.showShortPokemonDetails(context, e),
+                      onLongPressed: () => Helper.showShortPokemonDetails(e),
                     ),
                   ))
                     ..addAll([

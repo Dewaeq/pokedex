@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
@@ -19,7 +20,7 @@ class EvolutionWidget extends StatelessWidget {
   List<Pokemon> gMaxPokemon = [];
   List<Pokemon> alternatePokemon = [];
 
-  Widget _evolution(BuildContext context, Size size, Pokemon p) {
+  Widget _evolution(Size size, Pokemon p) {
     var evolution = pokemon.species.evolutions.firstWhere(
       (e) => p.name.contains(e.fromPokemon),
       orElse: () => null,
@@ -30,7 +31,7 @@ class EvolutionWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _pokemonItem(context, size, flex, p),
+          _pokemonItem(size, flex, p),
           SizedBox(
             width: evolution == null ? 0 : 10,
           ),
@@ -52,19 +53,18 @@ class EvolutionWidget extends StatelessWidget {
     );
   }
 
-  Widget _pokemonItem(BuildContext context, Size size, int flex, Pokemon p) {
+  Widget _pokemonItem(Size size, int flex, Pokemon p) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: MaterialButton(
         onPressed: () {
           if (p.name != pokemon.name) {
-            Navigator.push(
-              context,
+            navigatorKey.currentState.push(
               MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
             );
           }
         },
-        onLongPress: () => Helper.showShortPokemonDetails(context, p),
+        onLongPress: () => Helper.showShortPokemonDetails(p),
         padding: EdgeInsets.zero,
         child: Column(
           children: [
@@ -180,9 +180,7 @@ class EvolutionWidget extends StatelessWidget {
                       ),
                     )
                   : _scrollabe(
-                      evoPokemon
-                          .map((e) => _evolution(context, size, e))
-                          .toList(),
+                      evoPokemon.map((e) => _evolution(size, e)).toList(),
                     ),
             ),
           ),
@@ -192,7 +190,7 @@ class EvolutionWidget extends StatelessWidget {
                   title: 'Mega Evolution',
                   child: _scrollabe(
                     megaEvoPokemon
-                        .map((e) => _pokemonItem(context, size, 3, e))
+                        .map((e) => _pokemonItem(size, 3, e))
                         .toList(),
                   ),
                 ),
@@ -201,9 +199,7 @@ class EvolutionWidget extends StatelessWidget {
               : DetailItem(
                   title: 'Gigantamax forms',
                   child: _scrollabe(
-                    gMaxPokemon
-                        .map((e) => _pokemonItem(context, size, 3, e))
-                        .toList(),
+                    gMaxPokemon.map((e) => _pokemonItem(size, 3, e)).toList(),
                   ),
                 ),
           SizedBox(height: 20),
@@ -213,7 +209,7 @@ class EvolutionWidget extends StatelessWidget {
                   title: 'Alternative forms',
                   child: _scrollabe(
                     alternatePokemon
-                        .map((e) => _pokemonItem(context, size, 3, e))
+                        .map((e) => _pokemonItem(size, 3, e))
                         .toList(),
                   ),
                 ),

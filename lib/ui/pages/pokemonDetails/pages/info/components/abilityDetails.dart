@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/state/PokemonState.dart';
@@ -142,14 +143,13 @@ class AbilityDetails extends StatelessWidget {
                           child: PokemonCard(
                             cardType: 1,
                             pokemon: p,
-                            onPressed: () => Navigator.push(
-                              context,
+                            onPressed: () => navigatorKey.currentState.push(
                               MaterialPageRoute(
                                 builder: (_) => PokemonDetailsPage(pokemon: p),
                               ),
                             ),
                             onLongPressed: () =>
-                                Helper.showShortPokemonDetails(context, p),
+                                Helper.showShortPokemonDetails(p),
                           ),
                         );
                       }).toList()),
