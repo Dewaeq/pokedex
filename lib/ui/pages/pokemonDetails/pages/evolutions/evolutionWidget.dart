@@ -64,7 +64,7 @@ class EvolutionWidget extends StatelessWidget {
             );
           }
         },
-        onLongPress: () => Helper.showShortPokemonDetails(context, size, p),
+        onLongPress: () => Helper.showShortPokemonDetails(context, p),
         padding: EdgeInsets.zero,
         child: Column(
           children: [

@@ -80,8 +80,8 @@ class Helper {
     );
   }
 
-  static void showShortPokemonDetails(
-      BuildContext context, Size size, Pokemon pokemon) {
+  static void showShortPokemonDetails(BuildContext context, Pokemon pokemon) {
+    final size = MediaQuery.of(context).size;
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(

@@ -224,7 +224,7 @@ class _PokemonListState extends State<PokemonList>
                         ),
                       ),
                       onLongPressed: () =>
-                          Helper.showShortPokemonDetails(context, size, e),
+                          Helper.showShortPokemonDetails(context, e),
                     ),
                   ))
                     ..addAll([
