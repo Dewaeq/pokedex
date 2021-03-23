@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/customIcons/pokedexIcons.dart';
+import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/itemWithDescription.dart';
@@ -62,7 +63,8 @@ class BreedingWidget extends StatelessWidget {
     );
   }
 
-  Widget _eggGroup(BuildContext context, String name) {
+  Widget _eggGroup(String name) {
+    final context = navigatorKey.currentContext;
     EdgeInsets padding;
     if (pokemon.species.eggGroups.length == 1) {
       padding = EdgeInsets.zero;
@@ -173,7 +175,7 @@ class BreedingWidget extends StatelessWidget {
                     )
                   : Row(
                       children: pokemon.species.eggGroups
-                          .map((e) => _eggGroup(context, e))
+                          .map((e) => _eggGroup(e))
                           .toList(),
                     ),
               description: 'Egg Groups',

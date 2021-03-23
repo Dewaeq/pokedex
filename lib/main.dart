@@ -3,6 +3,8 @@ import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonList/pokemonList.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
 void main() {
   runApp(MultiProvider(
     providers: [
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -37,8 +40,7 @@ class MainPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
+                navigatorKey.currentState.push(
                   MaterialPageRoute(builder: (_) => PokemonList()),
                 );
               },

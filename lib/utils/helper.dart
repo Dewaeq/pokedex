@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/extensions/string_extension.dart';
+import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/utils/colorTheme.dart';
 
@@ -80,8 +81,9 @@ class Helper {
     );
   }
 
-  static void showShortPokemonDetails(
-      BuildContext context, Size size, Pokemon pokemon) {
+  static void showShortPokemonDetails(Pokemon pokemon) {
+    final context = navigatorKey.currentContext;
+    final size = MediaQuery.of(context).size;
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
