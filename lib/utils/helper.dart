@@ -3,7 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/extensions/string_extension.dart';
 import 'package:pokedex/main.dart';
+import 'package:pokedex/model/DefaultAbility.dart';
 import 'package:pokedex/model/Pokemon.dart';
+import 'package:pokedex/ui/pages/pokemonDetails/pages/info/components/abilityDetails.dart';
 import 'package:pokedex/utils/colorTheme.dart';
 
 class Helper {
@@ -77,6 +79,28 @@ class Helper {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static void showAbilityDetails(DefaultAbility ability, Color backgroundColor,
+      [Pokemon pokemon]) {
+    final context = navigatorKey.currentContext;
+    showModalBottomSheet(
+      context: context,
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      isDismissible: true,
+      builder: (_) => AbilityDetails(
+        pokemon: pokemon,
+        ability: ability,
+        backGroundColor: backgroundColor,
       ),
     );
   }

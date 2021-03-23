@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/main.dart';
+import 'package:pokedex/model/DefaultAbility.dart';
 import 'package:pokedex/model/Pokemon.dart';
-import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemonCard.dart';
-import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';
 
 class AbilityDetails extends StatelessWidget {
   final Pokemon pokemon;
-  final PokemonAbility ability;
-  AbilityDetails({@required this.pokemon, this.ability});
+  final DefaultAbility ability;
+  final Color backGroundColor;
+  AbilityDetails(
+      {@required this.pokemon,
+      @required this.ability,
+      @required this.backGroundColor});
 
   Widget _detailItem(String title, String text) {
     return Container(
@@ -55,9 +58,8 @@ class AbilityDetails extends StatelessWidget {
 
     if (!state.gotData) return CircularProgressIndicator();
 
-    final pokemonWithThisAbility = Helper.sortPokemon(state.pokemons
-        .where((e) => ability.ability.pokemon.contains(e.name))
-        .toList());
+    final pokemonWithThisAbility = Helper.sortPokemon(
+        state.pokemons.where((e) => ability.pokemon.contains(e.name)).toList());
 
     return Container(
       height: size.height * 0.85,
@@ -68,18 +70,19 @@ class AbilityDetails extends StatelessWidget {
             titleSpacing: 0,
             toolbarHeight: 100,
             floating: true,
+            backgroundColor: backGroundColor,
             title: Container(
               height: 100,
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 20),
               decoration: BoxDecoration(
-                color: setPrimaryColor(pokemon.types[0]),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     Helper.getDisplayName(ability.name),
@@ -89,15 +92,19 @@ class AbilityDetails extends StatelessWidget {
                       color: Colors.blueGrey[900],
                     ),
                   ),
-                  SizedBox(height: 12),
-                  Text(
-                    Helper.getDisplayName("${pokemon.name}'s ability"),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: Colors.blueGrey[700],
-                    ),
-                  ),
+                  pokemon == null
+                      ? Container()
+                      : Padding(
+                          padding: EdgeInsets.only(top: 12),
+                          child: Text(
+                            Helper.getDisplayName("${pokemon.name}'s ability"),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: Colors.blueGrey[700],
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -106,15 +113,13 @@ class AbilityDetails extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 _detailItem('GAME DESCRIPTION',
-                    ability.ability.description ?? 'Description not available'),
+                    ability.description ?? 'Description not available'),
                 _detailItem(
                     'EFFECT',
-                    ability.ability.shortEffectDescription ??
+                    ability.shortEffectDescription ??
                         'Description not available'),
-                _detailItem(
-                    'IN-DEPTH EFFECT',
-                    ability.ability.effectDescription ??
-                        'Description not available'),
+                _detailItem('IN-DEPTH EFFECT',
+                    ability.effectDescription ?? 'Description not available'),
                 SizedBox(height: 10),
                 Container(
                   margin: EdgeInsets.all(10),
@@ -125,35 +130,39 @@ class AbilityDetails extends StatelessWidget {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: Column(
-                    children: <Widget>[
-                      Text(
-                        'POKEMON WITH THIS ABILITY',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                    ]..addAll(pokemonWithThisAbility.map((p) {
-                        return Container(
-                          height: 130,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                          child: PokemonCard(
-                            cardType: 1,
-                            pokemon: p,
-                            onPressed: () => navigatorKey.currentState.push(
-                              MaterialPageRoute(
-                                builder: (_) => PokemonDetailsPage(pokemon: p),
+                      children: <Widget>[
+                            Text(
+                              'POKEMON WITH THIS ABILITY',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.blueGrey,
                               ),
                             ),
-                            onLongPressed: () =>
-                                Helper.showShortPokemonDetails(p),
-                          ),
-                        );
-                      }).toList()),
-                  ),
+                            SizedBox(height: 10),
+                          ] +
+                          (ability.pokemon.isEmpty
+                              ? [Text('There are no pokémon with this ability')]
+                              : pokemonWithThisAbility.map((p) {
+                                  return Container(
+                                    height: 130,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 8),
+                                    child: PokemonCard(
+                                      cardType: 1,
+                                      pokemon: p,
+                                      onPressed: () =>
+                                          navigatorKey.currentState.push(
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              PokemonDetailsPage(pokemon: p),
+                                        ),
+                                      ),
+                                      onLongPressed: () =>
+                                          Helper.showShortPokemonDetails(p),
+                                    ),
+                                  );
+                                }).toList())),
                 ),
               ],
             ),

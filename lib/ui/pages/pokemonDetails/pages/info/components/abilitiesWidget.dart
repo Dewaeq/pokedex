@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonAbility.dart';
 import 'package:pokedex/state/PokemonState.dart';
-import 'package:pokedex/ui/pages/pokemonDetails/pages/info/components/abilityDetails.dart';
 import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';
@@ -13,22 +11,6 @@ class AbilitiesWidget extends StatelessWidget {
   final Pokemon pokemon;
   PokemonState state;
   AbilitiesWidget({@required this.pokemon});
-
-  void showAbilityDetails(Size size, PokemonAbility ability) {
-    final context = navigatorKey.currentContext;
-    showModalBottomSheet(
-        context: context,
-        clipBehavior: Clip.hardEdge,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        )),
-        backgroundColor: Colors.white,
-        isScrollControlled: true,
-        isDismissible: true,
-        builder: (_) => AbilityDetails(pokemon: pokemon, ability: ability));
-  }
 
   Widget _abilityWidget(Size size, PokemonAbility ability) {
     return Container(
@@ -44,7 +26,11 @@ class AbilitiesWidget extends StatelessWidget {
       ),
       child: MaterialButton(
         padding: EdgeInsets.zero,
-        onPressed: () => showAbilityDetails(size, ability),
+        onPressed: () => Helper.showAbilityDetails(
+          ability.ability,
+          setPrimaryColor(pokemon.types[0]),
+          pokemon,
+        ),
         child: Row(
           children: [
             Expanded(

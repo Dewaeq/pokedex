@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/state/PokemonState.dart';
+import 'package:pokedex/ui/pages/abilityList/abilityList.dart';
 import 'package:pokedex/ui/pages/pokemonList/pokemonList.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +59,11 @@ class MainPage extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                navigatorKey.currentState.push(
+                  MaterialPageRoute(builder: (_) => AbilityList()),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
