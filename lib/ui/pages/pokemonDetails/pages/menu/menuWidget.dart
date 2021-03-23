@@ -5,6 +5,7 @@ import 'package:pokedex/state/PokemonState.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/components/detailItem.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/pokemonCards/pokemonCard.dart';
+import 'package:pokedex/ui/pages/pokemonList/pokemonList.dart';
 import 'package:pokedex/utils/colorTheme.dart';
 import 'package:pokedex/utils/helper.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,11 @@ class MenuWidget extends StatelessWidget {
 
   Widget _menuButton() {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () {
+        navigatorKey.currentState.pushReplacement(
+          MaterialPageRoute(builder: (_) => PokemonList()),
+        );
+      },
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -127,6 +132,7 @@ class MenuWidget extends StatelessWidget {
           child: Column(
             children: [
               _menuButton(),
+              SizedBox(height: 15),
               _pokemonCard(false, nextPokemon),
               SizedBox(height: 15),
               _pokemonCard(true, previousPokemon),
