@@ -14,6 +14,16 @@ class MenuWidget extends StatelessWidget {
   final Pokemon pokemon;
   MenuWidget({@required this.pokemon});
 
+  void _openPokemonDetails(Pokemon p) {
+    navigatorKey.currentState.push(
+      MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
+    );
+  }
+
+  void _openShortPokemonDetails(Pokemon p) {
+    Helper.showShortPokemonDetails(p);
+  }
+
   Widget _pokemonCard(bool previousPokemon, Pokemon p) {
     if (p == null) return Container();
 
@@ -23,44 +33,50 @@ class MenuWidget extends StatelessWidget {
           mainAxisAlignment:
               previousPokemon ? MainAxisAlignment.start : MainAxisAlignment.end,
           children: [
-            previousPokemon
-                ? Padding(
-                    padding: EdgeInsets.only(right: 15),
-                    child: Icon(
-                      Icons.arrow_back,
+            MaterialButton(
+              onPressed: () => _openPokemonDetails(p),
+              onLongPress: () => _openShortPokemonDetails(p),
+              padding: EdgeInsets.zero,
+              child: Row(
+                children: [
+                  previousPokemon
+                      ? Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(
+                            Icons.arrow_back,
+                            color: setPrimaryColor(p.types.first),
+                          ),
+                        )
+                      : Container(),
+                  Text(
+                    previousPokemon ? 'Previous Pokémon' : 'Next Pokémon',
+                    style: TextStyle(
                       color: setPrimaryColor(p.types.first),
-                    ),
-                  )
-                : Container(),
-            Text(
-              previousPokemon ? 'Previous Pokémon' : 'Next Pokémon',
-              style: TextStyle(
-                color: setPrimaryColor(p.types.first),
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
-            previousPokemon
-                ? Container()
-                : Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: setPrimaryColor(p.types.first),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
                     ),
                   ),
+                  previousPokemon
+                      ? Container()
+                      : Padding(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: setPrimaryColor(p.types.first),
+                          ),
+                        ),
+                ],
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 10),
         SizedBox(
           height: 120,
           child: PokemonCard(
             cardType: 1,
             pokemon: p,
-            onPressed: () => navigatorKey.currentState.push(
-              MaterialPageRoute(builder: (_) => PokemonDetailsPage(pokemon: p)),
-            ),
-            onLongPressed: () => Helper.showShortPokemonDetails(p),
+            onPressed: () => _openPokemonDetails(p),
+            onLongPressed: () => _openShortPokemonDetails(p),
           ),
         ),
       ],
@@ -125,20 +141,27 @@ class MenuWidget extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      child: DetailItem(
-        title: 'Menu',
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Column(
-            children: [
-              _menuButton(),
-              SizedBox(height: 15),
-              _pokemonCard(false, nextPokemon),
-              SizedBox(height: 15),
-              _pokemonCard(true, previousPokemon),
-              SizedBox(height: 7),
-            ],
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            DetailItem(
+              title: 'Menu',
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: Column(
+                  children: [
+                    _menuButton(),
+                    SizedBox(height: 15),
+                    _pokemonCard(false, nextPokemon),
+                    SizedBox(height: 15),
+                    _pokemonCard(true, previousPokemon),
+                    SizedBox(height: 7),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+          ],
         ),
       ),
     );
