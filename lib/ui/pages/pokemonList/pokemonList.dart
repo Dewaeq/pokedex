@@ -130,6 +130,10 @@ class _PokemonListState extends State<PokemonList>
           color: Colors.blueGrey[900],
         ),
       ),
+      leading: IconButton(
+        onPressed: _goHome,
+        icon: Icon(Icons.arrow_back),
+      ),
       toolbarHeight: size.height * 0.1,
       iconTheme: IconThemeData(color: Colors.blueGrey[700]),
       floating: true,
@@ -250,6 +254,10 @@ class _PokemonListState extends State<PokemonList>
         },
       ),
     );
+  }
+
+  void _goHome() {
+    Helper.clearNavigatorAndGoTo(MainPage());
   }
 
   void _openFilterMenu() {
@@ -423,40 +431,46 @@ class _PokemonListState extends State<PokemonList>
     }
     if (shownPokemon == null) shownPokemon = state.pokemons;
 
-    return KeyboardVisibilityBuilder(builder: (_, visible) {
-      return Scaffold(
-        floatingActionButton: _openFilter ? null : _floatingActionButton(),
-        backgroundColor: Colors.grey[50],
-        body: SafeArea(
-          child: Center(
-            child: Stack(
-              children: [
-                Container(
-                  child: _pokemonList(size),
-                ),
-                !_open
-                    ? Container()
-                    : Positioned(
-                        bottom: 85,
-                        right: 15,
-                        child: AnimatedOpacity(
-                          duration: Duration(milliseconds: 200),
-                          opacity: _open ? 1 : 0,
-                          child: floatingOptions(),
+    return WillPopScope(
+      onWillPop: () async {
+        _goHome();
+        return true;
+      },
+      child: KeyboardVisibilityBuilder(builder: (_, visible) {
+        return Scaffold(
+          floatingActionButton: _openFilter ? null : _floatingActionButton(),
+          backgroundColor: Colors.grey[50],
+          body: SafeArea(
+            child: Center(
+              child: Stack(
+                children: [
+                  Container(
+                    child: _pokemonList(size),
+                  ),
+                  !_open
+                      ? Container()
+                      : Positioned(
+                          bottom: 85,
+                          right: 15,
+                          child: AnimatedOpacity(
+                            duration: Duration(milliseconds: 200),
+                            opacity: _open ? 1 : 0,
+                            child: floatingOptions(),
+                          ),
                         ),
-                      ),
-                _openFilter
-                    ? FilterWidget(
-                        filter: _filterPokemon,
-                        onClosed: _closeFilterMenu,
-                        filters: _filters,
-                      )
-                    : Container(),
-              ],
+                  _openFilter
+                      ? FilterWidget(
+                          filter: _filterPokemon,
+                          onClosed: _closeFilterMenu,
+                          filters: _filters,
+                        )
+                      : Container(),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }

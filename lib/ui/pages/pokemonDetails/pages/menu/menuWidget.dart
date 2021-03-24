@@ -86,9 +86,7 @@ class MenuWidget extends StatelessWidget {
   Widget _menuButton() {
     return MaterialButton(
       onPressed: () {
-        navigatorKey.currentState.pushReplacement(
-          MaterialPageRoute(builder: (_) => PokemonList()),
-        );
+        Helper.clearNavigatorAndGoTo(PokemonList());
       },
       elevation: 0,
       shape: RoundedRectangleBorder(

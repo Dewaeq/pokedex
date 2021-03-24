@@ -83,6 +83,13 @@ class Helper {
     );
   }
 
+  static void clearNavigatorAndGoTo(Widget destination) {
+    navigatorKey.currentState.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => destination),
+      (r) => false,
+    );
+  }
+
   static void showAbilityDetails(DefaultAbility ability, Color backgroundColor,
       [Pokemon pokemon]) {
     final context = navigatorKey.currentContext;
