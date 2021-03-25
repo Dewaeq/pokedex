@@ -3,6 +3,16 @@
 # You can also download your configuration from Worklow Editor to get started
 
 workflows:
+  main-workflow:
+    name: Main Workflow
+    scripts:
+      - name: Step name
+        script: echo "Hello Codemagician!"
+        publishing:
+    email:
+      recipients:
+        - Encrypted(Z0FBQUFBQmdYRGxyTGVtSnVLbEZ2ckJCb3Q2YjFkcnpjWWo0V1o5ajdia1hCMHMtanZpM3JZMUg5ZXlHOHlqcnlvOHNhaUJaVG01QWo2N2NENFh3dS1Vd2VsaTJrOFNydHRnSkEyRDM1Y1QzRmtNWlZiYmh4TEE9)
+
   example-workflow:
     name: Example Workflow
     scripts:
