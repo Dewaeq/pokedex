@@ -58,6 +58,7 @@ class MainPage extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 navigatorKey.currentState.push(
