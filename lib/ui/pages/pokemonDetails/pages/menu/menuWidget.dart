@@ -70,8 +70,9 @@ class MenuWidget extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(height: 20),
         SizedBox(
-          height: 120,
+          height: 160,
           child: PokemonCard(
             cardType: 1,
             pokemon: p,
@@ -88,6 +89,7 @@ class MenuWidget extends StatelessWidget {
       onPressed: () {
         Helper.clearNavigatorAndGoTo(PokemonList());
       },
+      height: 60,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -108,7 +110,7 @@ class MenuWidget extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: 0,
+              left: 15,
               child: Icon(
                 Icons.home,
                 color: setPrimaryColor(pokemon.types.first),
@@ -145,13 +147,13 @@ class MenuWidget extends StatelessWidget {
             DetailItem(
               title: 'Menu',
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
                 child: Column(
                   children: [
                     _menuButton(),
-                    SizedBox(height: 15),
+                    SizedBox(height: 70),
                     _pokemonCard(false, nextPokemon),
-                    SizedBox(height: 15),
+                    SizedBox(height: 50),
                     _pokemonCard(true, previousPokemon),
                     SizedBox(height: 7),
                   ],

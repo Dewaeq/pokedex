@@ -1,6 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pokedex/constants/constants.dart';
 import 'package:pokedex/extensions/string_extension.dart';
 import 'package:pokedex/main.dart';
 import 'package:pokedex/model/DefaultAbility.dart';
@@ -117,60 +117,49 @@ class Helper {
     final size = MediaQuery.of(context).size;
     showModalBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        )),
-        backgroundColor: setPrimaryColor(pokemon.types[0]),
+        backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (_) {
-          return SingleChildScrollView(
-            clipBehavior: Clip.none,
+          return SizedBox(
+            height: size.height * 0.55,
             child: Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.topCenter,
+              alignment: Alignment.bottomCenter,
               children: [
-                Positioned(
-                  top: -50,
-                  width: size.width,
-                  child: Container(
-                    padding: EdgeInsets.zero,
-                    margin: EdgeInsets.zero,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(left: 30, top: 80),
-                          width: size.width * 0.4,
-                          child: AutoSizeText(
-                            Helper.getDisplayName(pokemon.name),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w800,
-                            ),
-                            maxFontSize: 24,
-                            wrapWords: false,
-                            maxLines: 3,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: CachedNetworkImage(
-                            imageUrl: pokemon.photoUrl,
-                            width: size.width * 0.4 - 10,
-                          ),
-                        ),
-                      ],
+                Container(
+                  width: size.width * SCREEN_WIDTH,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  alignment: Alignment.topCenter,
+                  decoration: BoxDecoration(
+                    color: setPrimaryColor(pokemon.types[0]),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 110),
                   child: Column(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Helper.getDisplayName(pokemon.name),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 40,
+                              ),
+                            ),
+                            SizedBox(width: 40),
+                            CachedNetworkImage(
+                              imageUrl: pokemon.photoUrl,
+                              height: 150,
+                              width: 150,
+                            ),
+                          ],
+                        ),
+                      ),
                       _panelRow("Id", Pokemon.getId(pokemon.id.toString())),
                       if (pokemon.types.length == 1)
                         _panelRow(
@@ -180,6 +169,7 @@ class Helper {
                             '${pokemon.types[0].capitalizeFirstofEach()}, ${pokemon.types[1].capitalizeFirstofEach()}'),
                       _panelRow('Height', '${pokemon.height / 10} m'),
                       _panelRow('Weight', '${pokemon.weight / 10} kg'),
+                      Expanded(child: Container()),
                       Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -195,6 +185,81 @@ class Helper {
                       SizedBox(height: 20),
                     ],
                   ),
+                  /* child: SingleChildScrollView(
+                    clipBehavior: Clip.none,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Positioned(
+                          top: -50,
+                          width: size.width * SCREEN_WIDTH,
+                          child: Container(
+                            padding: EdgeInsets.zero,
+                            margin: EdgeInsets.zero,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(left: 30, top: 80),
+                                  width: size.width * SCREEN_WIDTH * 0.4,
+                                  child: AutoSizeText(
+                                    Helper.getDisplayName(pokemon.name),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                    maxFontSize: 24,
+                                    wrapWords: false,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20),
+                                  child: CachedNetworkImage(
+                                    imageUrl: pokemon.photoUrl,
+                                    width: size.width * SCREEN_WIDTH * 0.4 - 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 110),
+                          child: Column(
+                            children: [
+                              _panelRow(
+                                  "Id", Pokemon.getId(pokemon.id.toString())),
+                              if (pokemon.types.length == 1)
+                                _panelRow('Type',
+                                    pokemon.types[0].capitalizeFirstofEach()),
+                              if (pokemon.types.length > 1)
+                                _panelRow('Types',
+                                    '${pokemon.types[0].capitalizeFirstofEach()}, ${pokemon.types[1].capitalizeFirstofEach()}'),
+                              _panelRow('Height', '${pokemon.height / 10} m'),
+                              _panelRow('Weight', '${pokemon.weight / 10} kg'),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 10),
+                                child: Text(
+                                  pokemon.species.description,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ), */
                 ),
               ],
             ),

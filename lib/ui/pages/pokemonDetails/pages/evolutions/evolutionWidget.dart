@@ -79,7 +79,7 @@ class EvolutionWidget extends StatelessWidget {
             SizedBox(height: 15),
             CachedNetworkImage(
               imageUrl: p.photoUrl,
-              width: (size.width - 100) / flex,
+              width: 130,
             ),
           ],
         ),

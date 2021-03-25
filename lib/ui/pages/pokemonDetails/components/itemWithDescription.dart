@@ -23,6 +23,7 @@ class ItemWithDescription extends StatelessWidget {
           padding: !padding
               ? null
               : EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          margin: EdgeInsets.only(left: 30, right: 30, top: 30),
           clipBehavior: Clip.hardEdge,
           width: double.infinity,
           alignment: Alignment.center,
@@ -44,6 +45,7 @@ class ItemWithDescription extends StatelessWidget {
             fontWeight: FontWeight.w300,
           ),
         ),
+        SizedBox(width: 15),
       ],
     );
   }

@@ -41,8 +41,6 @@ class PokemonCard1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return MaterialButton(
       onPressed: onPressed,
       onLongPress: onLongPressed,
@@ -84,8 +82,8 @@ class PokemonCard1 extends StatelessWidget {
             Positioned(
               bottom: 5,
               right: 10,
-              width: size.width * 0.2,
-              height: size.width * 0.2,
+              width: 90,
+              height: 90,
               child: CachedNetworkImage(
                 imageUrl: pokemon.photoUrl,
                 progressIndicatorBuilder: (context, url, downloadProgress) =>

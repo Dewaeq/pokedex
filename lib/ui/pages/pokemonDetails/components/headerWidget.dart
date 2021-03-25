@@ -84,10 +84,11 @@ class HeaderWidget extends StatelessWidget {
                   Container(
                     height: 25,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: pokemon.types
                           .map(
-                            (e) => Expanded(
+                            (e) => SizedBox(
+                              width: 80,
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 8),
                                 child:
@@ -105,6 +106,7 @@ class HeaderWidget extends StatelessWidget {
           SizedBox(width: 20),
           CachedNetworkImage(
             imageUrl: pokemon.photoUrl,
+            height: 110,
             width: size.width * 0.25,
           )
         ],

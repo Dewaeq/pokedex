@@ -6,6 +6,7 @@ import 'package:pokedex/main.dart';
 import 'package:pokedex/model/Pokemon.dart';
 import 'package:pokedex/model/PokemonFilter.dart';
 import 'package:pokedex/state/PokemonState.dart';
+import 'package:pokedex/ui/components/webPageWrapper.dart';
 import 'package:pokedex/ui/pages/pokemonDetails/pokemonDetailsPage.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/filter/filterButtons.dart';
 import 'package:pokedex/ui/pages/pokemonList/components/filter/filterWidget.dart';
@@ -214,7 +215,7 @@ class _PokemonListState extends State<PokemonList>
                   ),
                 )
               : SliverGrid.count(
-                  crossAxisCount: _cardType + 1,
+                  crossAxisCount: _cardType + 3,
                   childAspectRatio: 1.1,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
@@ -437,37 +438,38 @@ class _PokemonListState extends State<PokemonList>
         return true;
       },
       child: KeyboardVisibilityBuilder(builder: (_, visible) {
-        return Scaffold(
-          floatingActionButton: _openFilter ? null : _floatingActionButton(),
-          backgroundColor: Colors.grey[50],
-          body: SafeArea(
-            child: Center(
-              child: Stack(
-                children: [
-                  Container(
-                    child: _pokemonList(size),
-                  ),
-                  !_open
-                      ? Container()
-                      : Positioned(
-                          bottom: 85,
-                          right: 15,
-                          child: AnimatedOpacity(
-                            duration: Duration(milliseconds: 200),
-                            opacity: _open ? 1 : 0,
-                            child: floatingOptions(),
-                          ),
-                        ),
-                  _openFilter
-                      ? FilterWidget(
-                          filter: _filterPokemon,
-                          onClosed: _closeFilterMenu,
-                          filters: _filters,
-                        )
-                      : Container(),
-                ],
+        return WebPageWrapper(
+          child: Stack(
+            children: [
+              Container(
+                child: _pokemonList(size),
               ),
-            ),
+              !_open
+                  ? Container()
+                  : Positioned(
+                      bottom: 85,
+                      right: 15,
+                      child: AnimatedOpacity(
+                        duration: Duration(milliseconds: 200),
+                        opacity: _open ? 1 : 0,
+                        child: floatingOptions(),
+                      ),
+                    ),
+              _openFilter
+                  ? Container()
+                  : Positioned(
+                      bottom: 15,
+                      right: 15,
+                      child: _floatingActionButton(),
+                    ),
+              _openFilter
+                  ? FilterWidget(
+                      filter: _filterPokemon,
+                      onClosed: _closeFilterMenu,
+                      filters: _filters,
+                    )
+                  : Container(),
+            ],
           ),
         );
       }),
