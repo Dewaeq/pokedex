@@ -6,8 +6,10 @@ workflows:
   main-workflow:
     name: Main Workflow
     scripts:
-      - name: Step name
-        script: echo "Hello Codemagician!"
+      - name: Build ios
+        script: flutter build ios --debug
+      - name: Build android
+        script: flutter build apk --debug
     publishing:
       email:
         recipients:
