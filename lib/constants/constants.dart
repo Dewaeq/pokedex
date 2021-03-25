@@ -1,4 +1,5 @@
 const BASE_URL = 'https://pokeapi.co/api/v2';
+const SCREEN_WIDTH = 0.5;
 
 const POKEMON_TYPES = <String>[
   'normal',
