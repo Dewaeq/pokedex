@@ -11,4 +11,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - codemagic@example.com
+          - Encrypted(Z0FBQUFBQmdYRGxyTGVtSnVLbEZ2ckJCb3Q2YjFkcnpjWWo0V1o5ajdia1hCMHMtanZpM3JZMUg5ZXlHOHlqcnlvOHNhaUJaVG01QWo2N2NENFh3dS1Vd2VsaTJrOFNydHRnSkEyRDM1Y1QzRmtNWlZiYmh4TEE9)
